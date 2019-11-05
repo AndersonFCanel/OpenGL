@@ -4,11 +4,11 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = my.o
-LINKOBJ  = my.o
-LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib32" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -L"Z:/Users/ander/Documents/OpenGl/GL" -static-libgcc -lglut32 -lglu32 -lopengl32 -m32
-INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"Z:/Users/ander/Documents/OpenGl/GL"
-CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"Z:/Users/ander/Documents/OpenGl/GL"
+OBJ      = JogoDaVelha.o
+LINKOBJ  = JogoDaVelha.o
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -L"Z:/Users/ander/Documents/OpenGl/GL" -static-libgcc -L"Z:/Users/ander/Documents/OpenGl/GL" -lglut32 -lglu32 -lopengl32 -m32
+INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"Z:/Users/ander/Documents/OpenGl/GL" -I"Z:/Users/ander/Documents/OpenGl/GL"
+CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"Z:/Users/ander/Documents/OpenGl/GL" -I"Z:/Users/ander/Documents/OpenGl/GL"
 BIN      = Projeto1.exe
 CXXFLAGS = $(CXXINCS) -m32
 CFLAGS   = $(INCS) -m32
@@ -24,5 +24,5 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-my.o: my.cpp
-	$(CPP) -c my.cpp -o my.o $(CXXFLAGS)
+JogoDaVelha.o: JogoDaVelha.cpp
+	$(CPP) -c JogoDaVelha.cpp -o JogoDaVelha.o $(CXXFLAGS)
