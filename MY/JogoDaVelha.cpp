@@ -3,16 +3,16 @@
 #include <string>
 #include <math.h>
 
-#define WIDTH 500 //LARGURA DA JANELA
-#define HEIGHT 500 //ALTURA DA JANELA
+#define LARGURA 500 //LARGURA DA JANELA
+#define ALTURA 500 //ALTURA DA JANELA
 #define PI 3.14 //Pi
 #define MARGIN_CORTE 10 //distancia do inicio da linha de corte da parede
 
 int janelaGeral;
 int campoCordenadas[9][2] = {
-	{0,(HEIGHT/3)*2},	{WIDTH/3,(HEIGHT/3)*2},	{(WIDTH/3)*2,(HEIGHT/3)*2},
-	{0,HEIGHT/3},		{WIDTH/3,HEIGHT/3},		{(WIDTH/3)*2,HEIGHT/3},
-	{0,0},				{WIDTH/3,0},			{(WIDTH/3)*2,0}
+	{0,(ALTURA/3)*2},	{LARGURA/3,(ALTURA/3)*2},	{(LARGURA/3)*2,(ALTURA/3)*2},
+	{0,ALTURA/3},		{LARGURA/3,ALTURA/3},		{(LARGURA/3)*2,ALTURA/3},
+	{0,0},				{LARGURA/3,0},			{(LARGURA/3)*2,0}
 };
 
 //campo marcado{0=nenhum;1=X;2=O}
@@ -29,16 +29,16 @@ int vencedor = 0;
 int linhasVencedor[8][4] = {
 	//cordenadas das linhas para desenhar quando houver vencedor
 	//{x0,y0,x,y}
-	{ (WIDTH/3)/2 , MARGIN_CORTE , (WIDTH/3)/2 , HEIGHT - MARGIN_CORTE}, // | 1coluna
-	{ (WIDTH/2) , MARGIN_CORTE , (WIDTH/2) , HEIGHT - MARGIN_CORTE}, // | 2coluna
-	{ WIDTH - (WIDTH/3)/2 , MARGIN_CORTE , WIDTH - (WIDTH/3)/2 , HEIGHT - MARGIN_CORTE}, // | 3coluna
+	{ (LARGURA/3)/2 , MARGIN_CORTE , (LARGURA/3)/2 , ALTURA - MARGIN_CORTE}, // | 1coluna
+	{ (LARGURA/2) , MARGIN_CORTE , (LARGURA/2) , ALTURA - MARGIN_CORTE}, // | 2coluna
+	{ LARGURA - (LARGURA/3)/2 , MARGIN_CORTE , LARGURA - (LARGURA/3)/2 , ALTURA - MARGIN_CORTE}, // | 3coluna
 	
-	{ MARGIN_CORTE , HEIGHT - (HEIGHT/3)/2, WIDTH - MARGIN_CORTE, HEIGHT - (HEIGHT/3)/2}, // -- 1linha
-	{ MARGIN_CORTE , (HEIGHT/2), WIDTH - MARGIN_CORTE, HEIGHT/2}, // -- 2linha
-	{ MARGIN_CORTE , (HEIGHT/3)/2, WIDTH - MARGIN_CORTE, (HEIGHT/3)/2}, // -- 3linha
+	{ MARGIN_CORTE , ALTURA - (ALTURA/3)/2, LARGURA - MARGIN_CORTE, ALTURA - (ALTURA/3)/2}, // -- 1linha
+	{ MARGIN_CORTE , (ALTURA/2), LARGURA - MARGIN_CORTE, ALTURA/2}, // -- 2linha
+	{ MARGIN_CORTE , (ALTURA/3)/2, LARGURA - MARGIN_CORTE, (ALTURA/3)/2}, // -- 3linha
 
-	{ MARGIN_CORTE , HEIGHT - MARGIN_CORTE, WIDTH - MARGIN_CORTE, MARGIN_CORTE}, // [\] transversal
-	{ MARGIN_CORTE , MARGIN_CORTE, WIDTH - MARGIN_CORTE, HEIGHT-MARGIN_CORTE}, // [/] transversal
+	{ MARGIN_CORTE , ALTURA - MARGIN_CORTE, LARGURA - MARGIN_CORTE, MARGIN_CORTE}, // [\] transversal
+	{ MARGIN_CORTE , MARGIN_CORTE, LARGURA - MARGIN_CORTE, ALTURA-MARGIN_CORTE}, // [/] transversal
 };
 
 
@@ -64,7 +64,7 @@ int main(int argc, char** argv){
 	glutInit(&argc, argv);
 	// glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize (WIDTH, HEIGHT);
+	glutInitWindowSize (LARGURA, ALTURA);
 	glutInitWindowPosition (100, 100); 
 
 	glutCreateWindow ("Jogo-da-Velha");
@@ -81,7 +81,7 @@ int main(int argc, char** argv){
 
 void init(void){
 	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glOrtho (0, WIDTH, 0, HEIGHT, -1 ,1);
+	glOrtho (0, LARGURA, 0, ALTURA, -1 ,1);
 }
 
 void display(void){
@@ -94,11 +94,11 @@ void display(void){
 	//MARGENS DO CAMPO
 	glColor3f(1.0, 1.0, 1.0);
 	//VERTICAL
-	glBegin(GL_LINES); glVertex2i(WIDTH/3,HEIGHT-1);  glVertex2i(WIDTH/3,1); glEnd();
-	glBegin(GL_LINES); glVertex2i((WIDTH/3)*2,HEIGHT-1);  glVertex2i((WIDTH/3)*2,1); glEnd();
+	glBegin(GL_LINES); glVertex2i(LARGURA/3,ALTURA-1);  glVertex2i(LARGURA/3,1); glEnd();
+	glBegin(GL_LINES); glVertex2i((LARGURA/3)*2,ALTURA-1);  glVertex2i((LARGURA/3)*2,1); glEnd();
 	//HORIZONTAL
-	glBegin(GL_LINES); glVertex2i(1,HEIGHT/3);  glVertex2i(WIDTH-1,HEIGHT/3); glEnd();
-	glBegin(GL_LINES); glVertex2i(1,(HEIGHT/3)*2);  glVertex2i(WIDTH-1,(HEIGHT/3)*2); glEnd();
+	glBegin(GL_LINES); glVertex2i(1,ALTURA/3);  glVertex2i(LARGURA-1,ALTURA/3); glEnd();
+	glBegin(GL_LINES); glVertex2i(1,(ALTURA/3)*2);  glVertex2i(LARGURA-1,(ALTURA/3)*2); glEnd();
 
 	//DESENHA OS X
 	for(i=0; i < 9; i++){
@@ -183,8 +183,8 @@ void desenhaO(GLfloat x, GLfloat y)
 	int raioX=7, raioY=7; 
 	glLineWidth(3.0); 
 	
-	x = x + ((WIDTH/3)/2);
-	y = y + ((HEIGHT/3)/2);
+	x = x + ((LARGURA/3)/2);
+	y = y + ((ALTURA/3)/2);
 
 	glBegin(GL_LINE_LOOP); 
 	for (int i = 0; i < circle_points; i++) 
@@ -202,17 +202,17 @@ void desenhaX(int x, int y){
 
 	//linhas cruzadas
 	glBegin(GL_LINES); 
-		glVertex2i( x , y ); glVertex2i( x + (WIDTH/3) , y + (HEIGHT/3) );
-		glVertex2i( x , y + (HEIGHT/3) ); glVertex2i(x + (WIDTH/3) , y); 
+		glVertex2i( x , y ); glVertex2i( x + (LARGURA/3) , y + (ALTURA/3) );
+		glVertex2i( x , y + (ALTURA/3) ); glVertex2i(x + (LARGURA/3) , y); 
 	glEnd(); 
 	//glFlush();
 }
 
 int descobreColuna(int x){
 
-	if(x < WIDTH/3)//COL_1
+	if(x < LARGURA/3)//COL_1
 		return 0;
-	if(x > WIDTH/3 && x < (WIDTH/3)*2) //COL_2
+	if(x > LARGURA/3 && x < (LARGURA/3)*2) //COL_2
 		return 1;
 	return 2; //COL_3
 
@@ -220,9 +220,9 @@ int descobreColuna(int x){
 
 int descobreLinha(int y){
 
-	if(y < HEIGHT/3)//LINHA_1
+	if(y < ALTURA/3)//LINHA_1
 		return 0;
-	if(y > HEIGHT/3 && y < (HEIGHT/3)*2) //LINHA_2
+	if(y > ALTURA/3 && y < (ALTURA/3)*2) //LINHA_2
 		return 1;
 	return 2; //LINHA_3
 
