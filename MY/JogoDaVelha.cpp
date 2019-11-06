@@ -6,10 +6,10 @@
 #define LARGURA 500 //LARGURA DA JANELA
 #define ALTURA 500 //ALTURA DA JANELA
 #define PI 3.14 //Pi
-#define MARGIN_CORTE 10 //distancia do inicio da linha de corte da parede
+#define DISTANCIA_CORTE_PAREDE 10 //distancia do inicio da linha de corte da parede
 
 int janelaGeral;
-int campoCordenadas[9][2] = {
+int cordenadasCamposJogada[9][2] = {
 	{0,(ALTURA/3)*2},	{LARGURA/3,(ALTURA/3)*2},	{(LARGURA/3)*2,(ALTURA/3)*2},
 	{0,ALTURA/3},		{LARGURA/3,ALTURA/3},		{(LARGURA/3)*2,ALTURA/3},
 	{0,0},				{LARGURA/3,0},			{(LARGURA/3)*2,0}
@@ -20,25 +20,25 @@ int campoMarcado[9] = {0,0,0,0,0,0,0,0,0};
 
 int i;
 int VEZ = 1; //1 = X| -1 = O
-int Xwins=0,Owins=0;
+int XVence=0,OVence=0;
 int linha=0;
 int coluna=0;
 int calc = 0;
-int cortaVencedor = 0; //identifica qual linha desenhar
+int marcaVencedor = 0; //identifica qual linha desenhar
 int vencedor = 0;
-int linhasVencedor[8][4] = {
+int cordenadasLinhasVencedor[8][4] = {
 	//cordenadas das linhas para desenhar quando houver vencedor
 	//{x0,y0,x,y}
-	{ (LARGURA/3)/2 , MARGIN_CORTE , (LARGURA/3)/2 , ALTURA - MARGIN_CORTE}, // | 1coluna
-	{ (LARGURA/2) , MARGIN_CORTE , (LARGURA/2) , ALTURA - MARGIN_CORTE}, // | 2coluna
-	{ LARGURA - (LARGURA/3)/2 , MARGIN_CORTE , LARGURA - (LARGURA/3)/2 , ALTURA - MARGIN_CORTE}, // | 3coluna
+	{ (LARGURA/3)/2 , DISTANCIA_CORTE_PAREDE , (LARGURA/3)/2 , ALTURA - DISTANCIA_CORTE_PAREDE}, // | viória na coluna 1
+	{ (LARGURA/2) , DISTANCIA_CORTE_PAREDE , (LARGURA/2) , ALTURA - DISTANCIA_CORTE_PAREDE}, // | viória na coluna 2
+	{ LARGURA - (LARGURA/3)/2 , DISTANCIA_CORTE_PAREDE , LARGURA - (LARGURA/3)/2 , ALTURA - DISTANCIA_CORTE_PAREDE}, // | viória na coluna 2
 	
-	{ MARGIN_CORTE , ALTURA - (ALTURA/3)/2, LARGURA - MARGIN_CORTE, ALTURA - (ALTURA/3)/2}, // -- 1linha
-	{ MARGIN_CORTE , (ALTURA/2), LARGURA - MARGIN_CORTE, ALTURA/2}, // -- 2linha
-	{ MARGIN_CORTE , (ALTURA/3)/2, LARGURA - MARGIN_CORTE, (ALTURA/3)/2}, // -- 3linha
+	{ DISTANCIA_CORTE_PAREDE , ALTURA - (ALTURA/3)/2, LARGURA - DISTANCIA_CORTE_PAREDE, ALTURA - (ALTURA/3)/2}, // -- viória na linha 1
+	{ DISTANCIA_CORTE_PAREDE , (ALTURA/2), LARGURA - DISTANCIA_CORTE_PAREDE, ALTURA/2}, // -- viória na linha 2
+	{ DISTANCIA_CORTE_PAREDE , (ALTURA/3)/2, LARGURA - DISTANCIA_CORTE_PAREDE, (ALTURA/3)/2}, // -- viória na linha 3
 
-	{ MARGIN_CORTE , ALTURA - MARGIN_CORTE, LARGURA - MARGIN_CORTE, MARGIN_CORTE}, // [\] transversal
-	{ MARGIN_CORTE , MARGIN_CORTE, LARGURA - MARGIN_CORTE, ALTURA-MARGIN_CORTE}, // [/] transversal
+	{ DISTANCIA_CORTE_PAREDE , ALTURA - DISTANCIA_CORTE_PAREDE, LARGURA - DISTANCIA_CORTE_PAREDE, DISTANCIA_CORTE_PAREDE}, // [\] viória na transversal
+	{ DISTANCIA_CORTE_PAREDE , DISTANCIA_CORTE_PAREDE, LARGURA - DISTANCIA_CORTE_PAREDE, ALTURA-DISTANCIA_CORTE_PAREDE}, // [/] viória na transversal
 };
 
 
@@ -67,7 +67,7 @@ int main(int argc, char** argv){
 	glutInitWindowSize (LARGURA, ALTURA);
 	glutInitWindowPosition (100, 100); 
 
-	glutCreateWindow ("Jogo-da-Velha");
+	glutCreateWindow ("Jogo-da-Velha-Trabalho de computação gráfica");
 	showMenu();
 	init();
 	
@@ -103,9 +103,9 @@ void display(void){
 	//DESENHA OS X
 	for(i=0; i < 9; i++){
 		if(campoMarcado[i] == 1){
-			desenhaX(campoCordenadas[i][0],campoCordenadas[i][1]); //passar cordenadas predefinidas em campoCordenadas
+			desenhaX(cordenadasCamposJogada[i][0],cordenadasCamposJogada[i][1]); //passar cordenadas predefinidas em cordenadasCamposJogada
 		}else if(campoMarcado[i] == -1){
-			desenhaO(campoCordenadas[i][0],campoCordenadas[i][1]); //falta desenhar bola
+			desenhaO(cordenadasCamposJogada[i][0],cordenadasCamposJogada[i][1]); //falta desenhar bola
 		}
 	}
 
@@ -117,8 +117,8 @@ void display(void){
 		glColor3f(0.0, 0.0, 1.0);
 		glLineWidth(25.0);
 		glBegin(GL_LINES);
-			glVertex2f(linhasVencedor[cortaVencedor][0],linhasVencedor[cortaVencedor][1]);
-			glVertex2f(linhasVencedor[cortaVencedor][2],linhasVencedor[cortaVencedor][3]);
+			glVertex2f(cordenadasLinhasVencedor[marcaVencedor][0],cordenadasLinhasVencedor[marcaVencedor][1]);
+			glVertex2f(cordenadasLinhasVencedor[marcaVencedor][2],cordenadasLinhasVencedor[marcaVencedor][3]);
 		glEnd();
 	}
 
@@ -136,8 +136,8 @@ void keyboard(unsigned char key, int x, int y){
 		case 'r':
 			resetarJogo();
 			break;
-		case 'V':
-		case 'v':
+		case 'P':
+		case 'p':
 			verPontos();
 			break;
 		case 'W':
@@ -233,23 +233,23 @@ void resetarJogo(void){
 	for(i = 0; i < 9; i++)
 		campoMarcado[i] = 0;
 	vencedor = 0;
-	cortaVencedor = 0;
+	marcaVencedor = 0;
 }
 
 void showMenu(void){
 	
-	printf("\n#######################################################################\n");
-	printf("#############		JOGO-DA-VELHA - OPENGL		###############\n");
-	printf("#######################################################################\n");
-	printf("## | MENU | ##\n");
-	printf("[R] - Reiniciar Jogo\n");
-	printf("[V] - Mostrar Pontuacao\n");
-	printf("[ESC] - Sair\n");
+	printf("\n*********************************************************************\n");
+	printf("<<<<<<<<<<<<<	TRABALHO A2 COMPUTACAO GRAFICA	>>>>>>>>>>>>>\n");
+	printf("*********************************************************************\n");
+	printf("\n");
+	printf("PRESSIONE  'R'   para Reiniciar Jogo\n");
+	printf("PRESSIONE  'P'   para Mostrar Pontuacao\n");
+	printf("PRESSIONE  'ESC' para Sair\n");
 	printf("-------------------------------------------------------------------\n");
 }
 
 void verPontos(void){
-	printf("\n## PONTUACAO : X[%i] x O[%i]\n",Xwins,Owins);
+	printf("\n## PONTUACAO : X[%i] x O[%i]\n",XVence,OVence);
 }
 
 void verificaVencedor(void){
@@ -265,12 +265,12 @@ void verificaVencedor(void){
 		//verifica se houve vencedor
 		if((t == 3) || (t == -3)){
 			vencedor = 1 * t;
-			cortaVencedor = i + 3; //linha pra cortar
+			marcaVencedor = i + 3; //linha pra cortar
 			printf("\n## VENCEDOR: Jogador[%i] Linha[%i]##\n",vencedor,i);
 
 			//vencedor positivo X ganhou, negativo O ganhou
-			if(vencedor > 0) Xwins++;
-			else Owins++;
+			if(vencedor > 0) XVence++;
+			else OVence++;
 
 			return;
 		}
@@ -285,12 +285,12 @@ void verificaVencedor(void){
 		//verifica se houve vencedor
 		if((t == 3) || (t == -3)){
 			vencedor = 1 * t;
-			cortaVencedor = i; //coluna pra cortar
+			marcaVencedor = i; //coluna pra cortar
 			printf("\n## VENCEDOR: Jogador[%i] Coluna[%i]##\n",vencedor,i);
 
 			//vencedor positivo X ganhou, negativo O ganhou
-			if(vencedor > 0) Xwins++;
-			else Owins++;
+			if(vencedor > 0) XVence++;
+			else OVence++;
 
 			return;
 		}
@@ -301,24 +301,25 @@ void verificaVencedor(void){
 	//verifica se houve vencedor
 	if((t == 3) || (t == -3)){
 		vencedor = 1 * t;
-		cortaVencedor = 6; //linha pra cortar
+		marcaVencedor = 6; //linha pra cortar
 		printf("\n## VENCEDOR: Jogador[%i] Transversal[\\]##\n",vencedor,i);
 		//vencedor positivo X ganhou, negativo O ganhou
-		if(vencedor > 0) Xwins++;
-		else Owins++;
+		if(vencedor > 0) XVence++;
+		else OVence++;
 		return;
 	}
+
 
 	//verifica ganhador na transversal  [/]
 	t = campoMarcado[2] + campoMarcado[4] + campoMarcado[6];
 	//verifica se houve vencedor
 	if((t == 3) || (t == -3)){
 		vencedor = 1 * t;
-		cortaVencedor = 7; //linha pra cortar
+		marcaVencedor = 7; //linha pra cortar
 		printf("\n## VENCEDOR: Jogador[%i] transversal[/]##\n",vencedor,i);
 		//vencedor positivo X ganhou, negativo O ganhou
-		if(vencedor > 0) Xwins++;
-		else Owins++;
+		if(vencedor > 0) XVence++;
+		else OVence++;
 	}
 
 }
