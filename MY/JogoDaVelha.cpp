@@ -96,6 +96,7 @@ void display(void){
 	//VERTICAL
 	glBegin(GL_LINES); glVertex2i(LARGURA/3,ALTURA-1);  glVertex2i(LARGURA/3,1); glEnd();
 	glBegin(GL_LINES); glVertex2i((LARGURA/3)*2,ALTURA-1);  glVertex2i((LARGURA/3)*2,1); glEnd();
+
 	//HORIZONTAL
 	glBegin(GL_LINES); glVertex2i(1,ALTURA/3);  glVertex2i(LARGURA-1,ALTURA/3); glEnd();
 	glBegin(GL_LINES); glVertex2i(1,(ALTURA/3)*2);  glVertex2i(LARGURA-1,(ALTURA/3)*2); glEnd();
@@ -140,14 +141,14 @@ void keyboard(unsigned char key, int x, int y){
 		case 'p':
 			verPontos();
 			break;
-		case 'W':
+		/*case 'W':
 		case 'w':
 			printf("\n#########################################\n");
 			for(i=0; i<9;i++){
 				printf("[%i] - %i\n",i,campoMarcado[i]);
 			}
 			printf("\n#########################################\n");
-			break;
+			break;*/
 	}
 }
 
