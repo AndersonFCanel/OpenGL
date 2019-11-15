@@ -78,7 +78,7 @@ char remontaQuadrado(int color){
 				    mudarCorSelecionadaRGBAnterior = 0;
   				}
                 //printf("Verde");
-                corSelecinada = 'V';
+                corSelecinada = 'G';
 				corSelecionadaRGB[0]=0.0f;
 				corSelecionadaRGB[1]=1.0f;
 				corSelecionadaRGB[2]=0.0f;
@@ -193,22 +193,42 @@ void desenha() {
    glMatrixMode(GL_MODELVIEW);     // To operate on Model-View matrix
    glLoadIdentity();               // Reset the model-view matrix
  	
-   //Redesenhando o objeto anterior
+ 	//mensagem de Here go
+	if(vez == 0){
+		glPushMatrix();
+		  glBegin(GL_QUADS);
+		      glColor3f ( 0.0f,  0.0f,  0.0f);
+		      	glVertex2f(-0.9f, 0.6f);
+		      	glVertex2f( 0.9f,  0.6f);
+				glVertex2f( 0.9f, 0.9f);
+				glVertex2f(-0.9f,  0.9f);
+		  glEnd();
+		glPopMatrix();
+		
+		glPushMatrix();
+		   glTranslatef(-0.4f, 0.7f, 0.0f);
+		   glScalef(0.001f, 0.001f, 0.0);
+		   DesenhaTexto("HERE GO", 1.0f,1.0f,1.0f);
+		glPopMatrix();
+	}
+ 	
+    //Redesenhando o objeto anterior
+    if(vez > 0){
+		glPushMatrix();                     // Save model-view matrix setting
+			//glTranslatef(-0.0f, 0.0f, 0.0f);    // Translate
+			glRotatef(0.0f, 0.0f, 0.0f, 1.0f); // rotate by angle in degrees
+			glBegin(GL_QUADS);                  // Each set of 4 vertices form a quad
+			glColor3f( corSelecionadaRGBAnterior[0],
+				       corSelecionadaRGBAnterior[1],
+					   corSelecionadaRGBAnterior[2]);     
+			glVertex2f(-0.5f, -0.5f);
+			glVertex2f( 0.5f, -0.5f);
+			glVertex2f( 0.5f,  0.5f);
+			glVertex2f(-0.5f,  0.5f);
+			glEnd();
+		glPopMatrix();                      // Restore the model-view matrix	
+	}
 
-	glPushMatrix();                     // Save model-view matrix setting
-		//glTranslatef(-0.0f, 0.0f, 0.0f);    // Translate
-		glRotatef(0.0f, 0.0f, 0.0f, 1.0f); // rotate by angle in degrees
-		glBegin(GL_QUADS);                  // Each set of 4 vertices form a quad
-		glColor3f( corSelecionadaRGBAnterior[0],
-			       corSelecionadaRGBAnterior[1],
-				   corSelecionadaRGBAnterior[2]);     
-		glVertex2f(-0.5f, -0.5f);
-		glVertex2f( 0.5f, -0.5f);
-		glVertex2f( 0.5f,  0.5f);
-		glVertex2f(-0.5f,  0.5f);
-		glEnd();
-	glPopMatrix();                      // Restore the model-view matrix	
- 
    glPushMatrix();                     // Save model-view matrix setting
    //glTranslatef(-0.0f, 0.0f, 0.0f);    // Translate
    glRotatef(angle, 0.0f, 0.0f, 1.0f); // rotate by angle in degrees
@@ -223,26 +243,43 @@ void desenha() {
    glEnd();
    glPopMatrix();                      // Restore the model-view matrix
    
-   
-    //mensagem de gamer over
-	if(gameover == 1){
+   	//mensagem para jogador entrar com os dados
+	if(vez == 0){
 		glPushMatrix();
 		  glBegin(GL_QUADS);
-		      glColor3f ( 1.0f,  0.0f,  0.0f);
-		      	glVertex2f(-0.5f, -0.5f);
-				glVertex2f( 0.5f, -0.5f);
-				glVertex2f( 0.5f,  0.5f);
-				glVertex2f(-0.5f,  0.5f);
+		      glColor3f ( 0.0f,  0.0f,  0.0f);
+		      	glVertex2f(-0.9f, 0.6f);
+		      	glVertex2f( 0.9f,  0.6f);
+				glVertex2f( 0.9f, 0.9f);
+				glVertex2f(-0.9f,  0.9f);
 		  glEnd();
 		glPopMatrix();
 		
 		glPushMatrix();
-		   //glTranslatef(-0.25f, 0.0f, 0.0f);
-		   //glScalef(0.07f, 0.07f, 0.0);
-		   DesenhaTexto("GAMEOVER", 1.0,1.0,1.0);
+		   glTranslatef(-0.4f, 0.7f, 0.0f);
+		   glScalef(0.001f, 0.001f, 0.0);
+		   DesenhaTexto("HERE GO", 1.0f,1.0f,1.0f);
 		glPopMatrix();
 	}
-	   
+   
+    //mensagem de gamer over
+	if(contGlogal == vez && vez > 0){
+		glPushMatrix();
+		  glBegin(GL_QUADS);
+		      glColor3f ( 0.0f,  0.0f,  0.0f);
+		      	glVertex2f(-0.6f, -0.6f);
+				glVertex2f( 0.6f, -0.6f);
+				glVertex2f( 0.6f,  0.6f);
+				glVertex2f(-0.6f,  0.6f);
+		  glEnd();
+		glPopMatrix();
+		
+		glPushMatrix();
+		   glTranslatef(-0.3f, 0.0f, 0.0f);
+		   glScalef(0.001f, 0.001f, 0.0);
+		   DesenhaTexto("GAMEOVER", 1.0f,1.0f,1.0f);
+		glPopMatrix();
+	}	   
    
    if(contGlogal >= vez){
    	//   glClear(GL_COLOR_BUFFER_BIT); 
@@ -307,7 +344,13 @@ void Anima(int value)
 		imprimeQuebraCabeca(arrayDeQuebraCabeca[contGlogal]);
 		printf("\nContagem LOOP corrente: %d",contGlogal);
 		printf(" - Codigo da cor a ser exibida: %d",arrayDeQuebraCabeca[contGlogal]);	
-		exibirQuebraCabeca = 0;
+		
+		if( contGlogal == vez ){
+			exibirQuebraCabeca = 0;
+		}
+		
+		x    = 0.6f;
+        y    = 0.6f;
     	contGlogal++;
 	}
 
@@ -349,6 +392,8 @@ void EspecificaParametrosVisualizacao(void)
 // Função callback chamada para gerenciar eventos de teclas normais
 void Teclado (unsigned char key, int x, int y)  
 {
+	int i = 0;
+	
 	switch(key)
 	{
 		case 27:	exit(0);	// ESC ?
@@ -418,6 +463,38 @@ void Teclado (unsigned char key, int x, int y)
 			exibirQuebraCabeca = 1;
 			gameover = 0;
 			break;
+		case 's' :	//INFORMAR JOGADAS //===>>> essa opção saíara
+			intCores = 999;
+			exibirQuebraCabeca = 1;
+			gameover = 0;
+			break;
+		case 'N' :	//NEW GAME
+		
+			for(i=0; i<= vez; i++){
+				arrayDeQuebraCabeca[i] = 0;	   //===>>> essa opção saíara
+				arrayDeJogadas[i] = 0;
+			}
+			vez = 0;
+			exibirQuebraCabeca = 0;
+			gameover = 0;
+            mudarCorSelecionadaRGBAnterior = 0;                    
+			
+			corSelecionadaRGBAnterior[0] = 1;
+		    corSelecionadaRGBAnterior[1] = 0 ;
+			corSelecionadaRGBAnterior[2] = 0;
+		    mudarCorSelecionadaRGBAnterior = 0;
+	
+			corSelecionadaRGB[0]=1.0f;
+			corSelecionadaRGB[1]=0.0f;
+			corSelecionadaRGB[2]=0.0f;
+			
+			contPassoDesenho = 0.0f;
+			x    = 0.0f;
+			y    = 0.0f;
+			angle = 0.0f;
+			intCores = 0;    //Para evitar loop infinito
+			
+			break;		
 		case 'i' :	//INFORMAR JOGADAS //===>>> essa opção saíara
 			intCores = 10;
 			break;	
