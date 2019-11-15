@@ -21,9 +21,9 @@ GLfloat  corSelecionadaRGB        [3] = {1.0f,0.0f,0.0f};        //Vetor para ar
 GLfloat  corSelecionadaRGBAnterior[3] = {1.0f,0.0f,0.0f};        //Vetor para armazenar informação sobre a cor anterior
 int      arrayDeJogadas           [255];                         //Vetor para armazenar Jogadas realizados pelo jogador
 int      arrayDeQuebraCabeca	  [255];					     //Vetor para armazenar sequencia de cores a ser mermorizada pelo jogador
-int      vez                          = 0;					     //Variável para armazenara vez corrente
-int mudarCorSelecionadaRGBAnterior    = 0;                       //Variável para auxílio quando ocorrer mudança de cor
-
+int      vez                            = 0;    			     //Variável para armazenara vez corrente
+int      mudarCorSelecionadaRGBAnterior = 0;                     //Variável para auxílio quando ocorrer mudança de cor
+int      contGlogal = 0;
 
 /**
 * Função para montagem do quadrado conforme codgo de cor informado
@@ -135,9 +135,9 @@ char remontaQuadrado(int color){
             case 10:
             	intCores = 999;    //Para evitar loop infinito
 				
-				printf("VEZ: "+ vez) ;   
+				printf("\nVEZ: "+ vez) ;   
    				
-   				printf("Jogada da rodada: ") ;//===>>> essa opção saíara
+   				printf("\nJogada da rodada: ") ;//===>>> essa opção saíara
    				printf("\n");
 	    		for(i=0; i< vez; i++){
 				   Imprime(arrayDeJogadas[i]); //===>>> essa opção saíara  
@@ -160,6 +160,11 @@ char remontaQuadrado(int color){
 void initGL() {
    // Set "clearing" or background color
    glClearColor(0.8f, 0.8f, 0.8f, 0.8f); // White and opaque  
+   	 	
+ 	if(contGlogal < vez){
+		imprimeQuebraCabeca(arrayDeQuebraCabeca[contGlogal]);
+    	contGlogal++;
+	}
 }
  
 /* Called back when there is no other event to be handled */
@@ -250,7 +255,6 @@ void Anima(int value)
    		angle += 45.0f; 
  	}	
 
-
 	// Redesenha o objeto em outra posição
 	glutPostRedisplay();
 	glutTimerFunc(300,Anima, 1);
@@ -295,51 +299,61 @@ void Teclado (unsigned char key, int x, int y)
 		    intCores = 0;
 		    jogar(0);
 		    montaQuebracabeca();
+		    contGlogal = 0;
 			break;
 		case 'r':   //VERMELHO    
 		    intCores = 0;
 		    jogar(0);
 		    montaQuebracabeca();
+			contGlogal = 0;
 			break;	
 		case 'G' :  //VERDE
 			jogar(1);	
 			intCores = 1;
 			montaQuebracabeca();
+			contGlogal = 0;
 			break;
 		case 'g':  //VERDE
 			jogar(1);	
 			intCores = 1;
 			montaQuebracabeca();
+			contGlogal = 0;
 			break;
 		case 'B':   //AZUL
 			intCores = 2;
             jogar(2);
             montaQuebracabeca();
+			contGlogal = 0;
 			break;
 		case  'b':   //AZUL
 			intCores = 2;
             jogar(2);
             montaQuebracabeca();
+            contGlogal = 0;
 			break;	
 		case 'Y':	//AMARELO
 			intCores = 3;
 		    jogar(3);
 		    montaQuebracabeca();
+		    contGlogal = 0;
 			break;
 		case 'y':	//AMARELO
 			intCores = 3;
 		    jogar(3);
 		    montaQuebracabeca();
+		    contGlogal = 0;
 			break;	
 		case 'W' :	//BRANCO
 			intCores = 4;
 		    jogar(4);
 		    montaQuebracabeca();
+		    contGlogal = 0;
 			break;
 		case 'w' :	//BRANCO
 			intCores = 4;
 		    jogar(4);
 		    montaQuebracabeca();
+		    contGlogal = 0;
 			break;
 		case 'i' :	//INFORMAR JOGADAS //===>>> essa opção saíara
 			intCores = 10;
@@ -351,15 +365,24 @@ void Teclado (unsigned char key, int x, int y)
 
 void jogar( int idCor, char cor){
     int i = 0;
-    vez+=1;
+    
     Set(&arrayDeJogadas [vez], idCor);
+    vez+=1;
+    int isVenceu =  checarCoincidenciaDosArrays();
+    if (isVenceu == 1){
+	   printf("\nParabens voce acertou a sequencia!!!");
+	}else
+	{
+		printf("\nQue pena voce errou a sequencia!!!");
+	
+	}
 }
 
 int checarCoincidenciaDosArrays(){
 	int i=0;
 	for(i=0; i< vez; i++){
 		if(arrayDeJogadas[i] == arrayDeQuebraCabeca[i])	{
-			
+
    		}else{
 		   		printf("\nVoce errou a sequencia ");
 		   		printf("\nSequencia informada pela maquina:  ");
@@ -370,9 +393,10 @@ int checarCoincidenciaDosArrays(){
 			    for(i=0; i< vez; i++){
 				   Imprime(arrayDeJogadas[i]);	
 				} 
-				break;
+				return 0;
 		   }	   
 	}
+	return 1;
 }
 
 
@@ -399,6 +423,7 @@ void montaQuebracabeca(void){
    	}	
 }
 
+
 void Set (int *N, int i) // função com um parâmetro por referência
 {
   *N = i;
@@ -408,6 +433,50 @@ void Set (int *N, int i) // função com um parâmetro por referência
 {
     printf("%d", N);
 }
+ 
+ 
+ 
+ 
+void imprimeQuebraCabeca(char color){
+		switch(color)
+	{
+		case 'R':   //VERMELHO    
+		    intCores = 0;
+			break;
+		case 'r':   //VERMELHO    
+		    intCores = 0;
+			break;	
+		case 'G' :  //VERDE
+			intCores = 1;
+			break;
+		case 'g':  //VERDE
+			intCores = 1;
+			break;
+		case 'B':   //AZUL
+			intCores = 2;
+    		break;
+		case  'b':   //AZUL
+			intCores = 2;
+    		break;	
+		case 'Y':	//AMARELO
+			intCores = 3;
+			break;
+		case 'y':	//AMARELO
+			intCores = 3;
+			break;	
+		case 'W' :	//BRANCO
+			intCores = 4;
+			break;
+		case 'w' :	//BRANCO
+			intCores = 4;
+			break;
+		}
+	glutPostRedisplay();
+	
+}
+ 
+ 
+ 
  
 /* Main function: GLUT runs as a console application starting at main() */
 int main(int argc, char** argv) {
@@ -451,6 +520,8 @@ int main(int argc, char** argv) {
 
 	// Registra a função callback para tratamento das teclas ASCII
  	glutKeyboardFunc (Teclado);
+ 	
+
 
 	// Registra a função callback para tratamento das teclas especiais
 //	glutSpecialFunc (TeclasEspeciais);
