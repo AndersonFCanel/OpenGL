@@ -5,6 +5,19 @@
 #include <stdlib.h>// necessário p/ as funções rand() e srand()
 #include<time.h>//necessário p/ função time()
 
+/* Jogo da memória tipo genius
+* INTRUÇÕES E TECLAS PARA O JOGO: 
+* Aguaradar uma sequência de cores e depois repetilas através das teclas correspondentes,
+* R / r -  Vermelho
+* G / g -  Verde
+* B / b -  Azul
+* Y / y -  Amarelo
+* W / w -  Branco
+*
+* Quando digitar a sequência anterior completa, pressionar S para próxima etapa. 
+* S / s - Iniciar próxima rodada
+*/
+
 
 // Variáveis globais GL
 GLfloat fAspect;
@@ -18,12 +31,14 @@ char     arrayCharCores           [5] = {'R','G','B','Y','W'};   //Identificador
 int      arrayIntCores            [5] = {0, 1, 2, 3, 4};         //Identificadores numérico das cores
 int      intCores                     = 999;                     //Variável para receber código proveniente do iedentificador de cores
 GLfloat  corSelecionadaRGB        [3] = {1.0f,0.0f,0.0f};        //Vetor para armazenar informação sobre a cor corrente
-GLfloat  corSelecionadaRGBAnterior[3] = {1.0f,0.0f,0.0f};        //Vetor para armazenar informação sobre a cor anterior
+GLfloat  corSelecionadaRGBAnterior[3] = {0.8f,0.8f,0.8f};        //Vetor para armazenar informação sobre a cor anterior
 int      arrayDeJogadas           [255];                         //Vetor para armazenar Jogadas realizados pelo jogador
 int      arrayDeQuebraCabeca	  [255];					     //Vetor para armazenar sequencia de cores a ser mermorizada pelo jogador
 int      vez                            = 0;    			     //Variável para armazenara vez corrente
 int      mudarCorSelecionadaRGBAnterior = 0;                     //Variável para auxílio quando ocorrer mudança de cor
 int      contGlogal = 0;
+int      exibirQuebraCabeca              = 0;
+
 
 /**
 * Função para montagem do quadrado conforme codgo de cor informado
@@ -178,7 +193,6 @@ void desenha() {
    glMatrixMode(GL_MODELVIEW);     // To operate on Model-View matrix
    glLoadIdentity();               // Reset the model-view matrix
  	
- 	
    //Redesenhando o objeto anterior
 
 	glPushMatrix();                     // Save model-view matrix setting
@@ -208,7 +222,10 @@ void desenha() {
       glVertex2f(-x,  y);
    glEnd();
    glPopMatrix();                      // Restore the model-view matrix
-
+   
+   if(contGlogal >= vez){
+   	   glClear(GL_COLOR_BUFFER_BIT); 
+   }
    glutSwapBuffers();   // Double buffered - swap the front and back buffers
    
  }
@@ -250,14 +267,13 @@ void Anima(int value)
    		 angle += 45.0f; 
  	}	
 
-	   
-	if(contGlogal < vez && contPassoDesenho >= 0.5f){
- 	  //  glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
+   
+	if(contGlogal <= vez && contPassoDesenho >= 0.5f || exibirQuebraCabeca >=1 ){
+ 	   // glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
 		imprimeQuebraCabeca(arrayDeQuebraCabeca[contGlogal]);
-		printf("\ncgaq - %d",arrayDeQuebraCabeca[contGlogal]);
 		printf("\ncg - %d",contGlogal);
+		printf("\ncgaq - %d",arrayDeQuebraCabeca[contGlogal]);	
     	contGlogal++;
-    //	desenha();
 	}
 
 //	printf("TESTE");
@@ -362,6 +378,10 @@ void Teclado (unsigned char key, int x, int y)
 		    montaQuebracabeca();
 		    contGlogal = 0;
 			break;
+		case 'S' :	//INFORMAR JOGADAS //===>>> essa opção saíara
+			intCores = 999;
+			exibirQuebraCabeca = 1;
+			break;
 		case 'i' :	//INFORMAR JOGADAS //===>>> essa opção saíara
 			intCores = 10;
 			break;	
@@ -376,7 +396,9 @@ void jogar( int idCor, char cor){
     
     Set(&arrayDeJogadas [vez], idCor);
     vez+=1;
+ 
     int isVenceu =  checarCoincidenciaDosArrays();
+ 
     if (isVenceu == 1){
 	   printf("\nParabens voce acertou a sequencia!!!");
 	}else
@@ -442,48 +464,28 @@ void Set (int *N, int i) // função com um parâmetro por referência
     printf("%d", N);
 }
  
- 
- 
- 
-void imprimeQuebraCabeca(char color){
-		switch(color)
+void imprimeQuebraCabeca(int codColor){
+		switch(codColor)
 	{
-		case 'R':   //VERMELHO    
+		case 0:   //VERMELHO    
 		    intCores = 0;
 			break;
-		case 'r':   //VERMELHO    
-		    intCores = 0;
-			break;	
-		case 'G' :  //VERDE
+		case 1 :  //VERDE
 			intCores = 1;
 			break;
-		case 'g':  //VERDE
-			intCores = 1;
-			break;
-		case 'B':   //AZUL
-			intCores = 2;
-    		break;
-		case  'b':   //AZUL
+		case 2 :   //AZUL
 			intCores = 2;
     		break;	
-		case 'Y':	//AMARELO
-			intCores = 3;
-			break;
-		case 'y':	//AMARELO
+		case 3 :	//AMARELO
 			intCores = 3;
 			break;	
-		case 'W' :	//BRANCO
-			intCores = 4;
-			break;
-		case 'w' :	//BRANCO
+		case 4 :	//BRANCO
 			intCores = 4;
 			break;
 		}
 	glutPostRedisplay();
 	
 }
- 
- 
  
  
 /* Main function: GLUT runs as a console application starting at main() */
