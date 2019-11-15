@@ -452,8 +452,8 @@ int checarCoincidenciaDosArrays(){
 			    for(i=0; i< vez; i++){
 				   Imprime(arrayDeJogadas[i]);	
 				} 
+			    gameover = 1;
 				return 0;
-				gameover = 1;
 		   }	   
 	}
 	return 1;
