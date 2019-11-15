@@ -407,6 +407,7 @@ void EspecificaParametrosVisualizacao(void)
 void Teclado (unsigned char key, int x, int y)  
 {
 	int i = 0;
+	if(gameover == 0 ){
 	
 	switch(key)
 	{
@@ -526,7 +527,48 @@ void Teclado (unsigned char key, int x, int y)
 			intCores = 10;
 			break;	
 		}
+	    }else
+	    {
+	    	
+	    switch(key)
+	    {
+	    	case 27:	exit(0);	// ESC ?
+			break;
+	   		case 'N' :	//NEW GAME
+		
+			for(i=0; i<= vez; i++){
+				arrayDeQuebraCabeca[i] = 9;	   //===>>> essa opção saíara
+				arrayDeJogadas[i] = 9;
+			}
+			vez = 0;
+			exibirQuebraCabeca = 0;
+			gameover = 0;
+            mudarCorSelecionadaRGBAnterior = 0;                    
 			
+			corSelecionadaRGBAnterior[0] = 1;
+		    corSelecionadaRGBAnterior[1] = 0 ;
+			corSelecionadaRGBAnterior[2] = 0;
+		    mudarCorSelecionadaRGBAnterior = 0;
+	
+			corSelecionadaRGB[0]=1.0f;
+			corSelecionadaRGB[1]=0.0f;
+			corSelecionadaRGB[2]=0.0f;
+			
+			exibirMenssagemJogar = 0;
+							
+			contPassoDesenho = 0.0f;
+			x    = 0.0f;
+			y    = 0.0f;
+			angle = 0.0f;
+			intCores = 0;    //Para evitar loop infinito
+			
+			break;		
+		case 'i' :	//INFORMAR JOGADAS //===>>> essa opção saíara
+			intCores = 10;
+			break;	
+		}
+	    }
+	    
 	glutPostRedisplay();
 }
 
