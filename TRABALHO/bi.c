@@ -31,12 +31,11 @@ GLfloat contPassoDesenho  = 0.0f;
 //Identificador das cores
 char     arrayCharCores           [5] = {'R','G','B','Y','W'};   //Identificadores das cores
 int      arrayIntCores            [5] = {0, 1, 2, 3, 4};         //Identificadores numérico das cores
-int      idCor                    = 9;                          //Variável para receber código proveniente do iedentificador de cores
+int      idCor                    ;                          //Variável para receber código proveniente do iedentificador de cores
 
 //RGB dos objetos
 GLfloat  corSelecionadaRGB        [3] = {0.0f,0.0f,0.0f};        //Vetor para armazenar informação sobre a cor corrente
 GLfloat  corSelecionadaRGBAnterior[3] = {0.8f,0.8f,0.8f};        //Vetor para armazenar informação sobre a cor anterior
-int      mudarCorSelecionadaRGBAnterior = 0;                     //Variável para auxílio quando ocorrer mudança de cor
 
 //Translação do texto
 GLfloat tx = -0.6f; 
@@ -47,7 +46,7 @@ int      arrayDeGuardaSequenciaDeCores [255];                     //Vetor para a
 
 //Controladores
 int      exibirSequenciaMemorizavel     = 0;                     //Variável para saber se é para informar gráficamente ao jogador a existência de nova rodada
-int      aguardaTecla = 1;
+int      aguardandoJogadas             = 1;
 int      gameover                       = 0;                     //essa é obivia
 int      exibirMenssagemJogar           = 0; 
 
@@ -70,13 +69,11 @@ char remontaQuadrado(int color){
     
     switch (color) {
             case 0:
-                mudarCorSelecionadaRGBAnterior=1;
-                if(mudarCorSelecionadaRGBAnterior == 1)   {
+       
                     corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
                     corSelecionadaRGBAnterior[1] = corSelecionadaRGB[1];
                     corSelecionadaRGBAnterior[2] = corSelecionadaRGB[2];
-                    mudarCorSelecionadaRGBAnterior = 0;
-                }
+                
                 //printf("Vermelho");
                 corSelecinada  = 'R';
                 corSelecionadaRGB[0]=1.0f;
@@ -89,14 +86,11 @@ char remontaQuadrado(int color){
                 idCor = 9;  //Para evitar loop infinito
             break;
             case 1:
-                mudarCorSelecionadaRGBAnterior=1;
-                if(mudarCorSelecionadaRGBAnterior == 1)   {
                     corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
                     corSelecionadaRGBAnterior[1] = corSelecionadaRGB[1];
                     corSelecionadaRGBAnterior[2] = corSelecionadaRGB[2];
-                    mudarCorSelecionadaRGBAnterior = 0;
-                }
-                //printf("Verde");
+                
+				//printf("Verde");
                 corSelecinada = 'G';
                 corSelecionadaRGB[0]=0.0f;
                 corSelecionadaRGB[1]=1.0f;
@@ -108,14 +102,11 @@ char remontaQuadrado(int color){
                 idCor = 9;    //Para evitar loop infinito
                 break;
             case 2:
-                mudarCorSelecionadaRGBAnterior=1;
-                if(mudarCorSelecionadaRGBAnterior == 1)   {
                     corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
                     corSelecionadaRGBAnterior[1] = corSelecionadaRGB[1];
                     corSelecionadaRGBAnterior[2] = corSelecionadaRGB[2];
-                    mudarCorSelecionadaRGBAnterior = 0;
-                }
-                //printf("Azul");
+                
+				//printf("Azul");
                 corSelecinada = 'B';
                 corSelecionadaRGB[0]=0.0f;
                 corSelecionadaRGB[1]=0.0f;
@@ -127,14 +118,12 @@ char remontaQuadrado(int color){
                 idCor = 9;  //Para evitar loop infinito
                 break;
             case 3:
-                mudarCorSelecionadaRGBAnterior=1;
-                if(mudarCorSelecionadaRGBAnterior == 1)   {
-                    corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
+                
+				    corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
                     corSelecionadaRGBAnterior[1] = corSelecionadaRGB[1];
                     corSelecionadaRGBAnterior[2] = corSelecionadaRGB[2];
-                    mudarCorSelecionadaRGBAnterior = 0;
-                }
-                //printf("Amarelo");
+                
+				//printf("Amarelo");
                 corSelecinada = 'Y';
                 corSelecionadaRGB[0]=1.0f;
                 corSelecionadaRGB[1]=1.0f;
@@ -147,14 +136,12 @@ char remontaQuadrado(int color){
                 
                 break;
             case 4:
-                mudarCorSelecionadaRGBAnterior=1;
-                if(mudarCorSelecionadaRGBAnterior == 1)   {
-                    corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
+                
+				    corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
                     corSelecionadaRGBAnterior[1] = corSelecionadaRGB[1];
                     corSelecionadaRGBAnterior[2] = corSelecionadaRGB[2];
-                    mudarCorSelecionadaRGBAnterior = 0;
-                }
-                //printf("Branco");
+                
+				//printf("Branco");
                 corSelecinada = 'W';
                 corSelecionadaRGB[0]=1.0f;
                 corSelecionadaRGB[1]=1.0f;
@@ -166,17 +153,6 @@ char remontaQuadrado(int color){
                 idCor = 9;    //Para evitar loop infinito
                 
                 break;
-            case 10:
-                idCor = 9;    //Para evitar loop infinito
-                
-                printf("\nVEZ: "+ vez) ;   
-                
-                printf("\nJogada da rodada: ") ;//===>>> essa opção saíara
-                printf("\n");
-                for(i=0; i< vez; i++){
-                   Imprime(arrayDeJogadas[i]); //===>>> essa opção saíara  
-                }
-            break;
             
             default:
             //  printf("Houve algum problema com o vetor de cores!");
@@ -213,7 +189,7 @@ void desenha() {
    glLoadIdentity();               // Reset the model-view matrix
     
     if(contIteracaoNaRodadaCorrente > 0 || vez == 0 ){//&& contJogadaCorrente >= vez ){
-    printf("DESENHANDO");
+  //  printf("DESENHANDO");
 	
 	//mensagem de Here go
     if(vez == 0){
@@ -381,10 +357,10 @@ void Anima(int value)
             exibirMenssagemJogar = 1;
         }
         
-        x    = 0.6f;
-        y    = 0.6f;
+        x    = 0.5f;
+        y    = 0.5f;
         
-        printf(" \n- Codigo da cor informada pelo usuario: %d",arrayDeJogadas[contIteracaoNaRodadaCorrente]);
+        //printf(" \n- Codigo da cor informada pelo usuario: %d",arrayDeJogadas[contIteracaoNaRodadaCorrente]);
         
 		contIteracaoNaRodadaCorrente++;
     }
@@ -426,19 +402,32 @@ void EspecificaParametrosVisualizacao(void)
  
 void reset (){
 	int i = 0;
-	for(i=0; i<= vez; i++){
-		arrayDeGuardaSequenciaDeCores[i] = 9; 	   //===>>> essa opção saíara
-		arrayDeJogadas[i] = 9;
+	int valorRandomico = 0;
+	srand(time(NULL));
+	
+	for(i=0; i< 255; i++){
+		//arrayDeGuardaSequenciaDeCores[i] = 9; 	   //===>>> essa opção saíara
+		arrayDeJogadas[i] = NULL;
+		
+		if(i > 0){
+     	do{    
+        	valorRandomico = rand() % 5;
+			Set(&arrayDeGuardaSequenciaDeCores[i], valorRandomico);
+       }while(valorRandomico == arrayDeGuardaSequenciaDeCores[i-1] );
+			}else
+		{   
+	     	 valorRandomico = rand() % 5;
+	      	Set(&arrayDeGuardaSequenciaDeCores[i], valorRandomico); 
+		}
 	}
+	
 	vez = 0;
 	exibirSequenciaMemorizavel = 0;
 	gameover = 0;
-	mudarCorSelecionadaRGBAnterior = 0;                    
-	
+		
 	corSelecionadaRGBAnterior[0] = 1;
 	corSelecionadaRGBAnterior[1] = 0 ;
 	corSelecionadaRGBAnterior[2] = 0;
-	mudarCorSelecionadaRGBAnterior = 0;
 
 	corSelecionadaRGB[0]=1.0f;
 	corSelecionadaRGB[1]=0.0f;
@@ -454,7 +443,7 @@ void reset (){
 	
 	contIteracaoNaRodadaCorrente   = 0;                     //Variável responsável pela contagem do loop corrente até que se inicie uma nova rodada
     contJogadaCorrente             = 0;
-	aguardaTecla = 1;
+	aguardandoJogadas = 1;
 
 	
 }
@@ -462,14 +451,16 @@ void reset (){
 void executaRotinaGame(int n) {
 		contIteracaoNaRodadaCorrente = 0;
 		exibirMenssagemJogar = 0;
-		contJogadaCorrente +=1;
-		aguardaTecla = 1;
+	    contJogadaCorrente +=1;
+		aguardandoJogadas = 1;
 	    idCor = n;                //Set cor 			
-		vez++;
+	
 		jogar(n);                    //ALimenta arrayDeJogadas
+	
 		checarCoincidenciaDosArrays();
+			vez++;
 		montaSequenciaMemorizavel();
-}
+	}
  
 // Função callback chamada para gerenciar eventos de teclas normais
 void Teclado (unsigned char key, int x, int y)  
@@ -547,79 +538,71 @@ void Teclado (unsigned char key, int x, int y)
 }
 
 
-void jogar( int idCor, char cor){
+void jogar( int idCorInfo, char cor){
     int i = 0;
     
-	if(contJogadaCorrente <= vez && aguardaTecla == 1 ){
-			Set(&arrayDeJogadas [contJogadaCorrente], idCor);
-		}else{
-			aguardaTecla = 0;
-			
-		//	montaSequenciaMemorizavel();
-		}
-    //Set(&arrayDeJogadas [contJogadaCorrente], idCor);
-    
-    printf("\ncontJogadas: %d",contJogadaCorrente);
-    printf("\nvez: %d",vez);
-    printf("\nCodigo das cores inseridas: ");   
-
-    for(i=0; i<= vez; i++){
-        Imprime(arrayDeJogadas[i]); 
-	}
-    
-   
-    
+	Set(&arrayDeJogadas [vez], idCorInfo);
 }
 
 int checarCoincidenciaDosArrays(){
     int i=0;
-    for(i=0; i<= contSizeGuardaSequenciaDeCores; i++){
-        if(arrayDeJogadas[i+1] == arrayDeGuardaSequenciaDeCores[i] || arrayDeJogadas[i] == 9) {
-             gameover = 0;
-        }else{
-                printf("\nVoce errou a sequencia ");
-                printf("\nSequencia informada pela maquina:  ");
-                for(i=0; i<= vez; i+=1){
-                   Imprime(arrayDeGuardaSequenciaDeCores[i]); 
-                }   
-                printf("\nSequencia informada por voce:  ");
-                for(i=0; i<= vez; i++){
-                   Imprime(arrayDeJogadas[i]);  
-                } 
-                gameover = 1;
-                return 0;
-           }       
-    }
+
+    printf("\ncontJogadas: %d",contJogadaCorrente);
+    printf("\nvez: %d",vez);
+
+    do{
+    	printf("\nI: %d",i);
+	        if(arrayDeJogadas[i] == arrayDeGuardaSequenciaDeCores[i]) {
+	             gameover = 0;
+	             printf("\nVoce acertou a sequencia ate aqui!");
+	        }else{
+	                printf("\nVoce errou a sequencia ");
+	                printf("\nSequencia informada pela maquina:  ");
+	                for(i=0; i<= vez; i+=1){
+	                   Imprime(arrayDeGuardaSequenciaDeCores[i]); 
+	                }   
+	                printf("\nSequencia informada por voce:  ");
+	                for(i=0; i<= vez; i++){
+	                   Imprime(arrayDeJogadas[i]);  
+	                } 
+	                gameover = 1;
+	                return 0;
+	           }       
+			i++;	
+	}while( i<vez );	
+ 
     return 1;
 }
 
 
 void montaSequenciaMemorizavel(void){
     int i = 0;
-    srand(time(NULL));
+    /*srand(time(NULL));
     printf("\nQuebra Cabeca: ");//===>>> essa opção saíara
     int valorRandomico = 0;
-    if(gameover == 0){
+    if(gameover == 0  && aguardandoJogadas == 0){
 	
-    if(vez != 0 && gameover != 1){
+    if(vez > 0){
      	do{    
         	valorRandomico = rand() % 5;
         	printf("valorRandomico: " ,valorRandomico);
 			Set(&arrayDeGuardaSequenciaDeCores[vez], valorRandomico);
        }while(valorRandomico == arrayDeGuardaSequenciaDeCores[vez-1] );
-       contSizeGuardaSequenciaDeCores+=1; 
+       contSizeGuardaSequenciaDeCores++; 
+       aguardandoJogadas = 1;
 	}else
 	{   
      	 valorRandomico = rand() % 5;
       	printf("valorRandomicoelse: " ,valorRandomico);
       	Set(&arrayDeGuardaSequenciaDeCores[vez], valorRandomico); 
-    	contSizeGuardaSequenciaDeCores+=1; 
+    	contSizeGuardaSequenciaDeCores++; 
+    	aguardandoJogadas = 1;
 	}
     
     for(i=0; i<= vez; i++){
          Imprime(arrayDeGuardaSequenciaDeCores[i]);      //===>>> essa opção saíara
     } 
-   }
+   }*/
 }
 
 
@@ -660,9 +643,13 @@ void imprimeQuebraCabeca(int codColor){
 /* Main function: GLUT runs as a console application starting at main() */
 int main(int argc, char** argv) {
 
-    /*if(vez == 0){
-        montaSequenciaMemorizavel();
-    }*/
+    if(vez == 0){
+        reset();
+        int c = 0;
+
+montaSequenciaMemorizavel();
+
+    }
     //	Set(&arrayDeJogadas [0], 3);
     	
     // Define o modo de operação da GLUT
