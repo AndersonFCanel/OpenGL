@@ -11,14 +11,17 @@ GLfloat y     = 0.0f;      //Valor de y corrente
 GLfloat cont  = 0.0f; 
  
 //Variáveis para controle do jogo 
-char     arrayCharCores    [5] = {'R','G','B','Y','W'};   //Identificadores das cores
-int      arrayIntCores     [5] = {0, 1, 2, 3, 4};         //Identificadores numérico das cores
-int      intCores              = 999;                     //Variável para receber código proveniente do iedentificador de cores
-GLfloat  corSelecionadaRGB [3] = {1.0f,0.0f,0.0f};        //Vetor para armazenar informação sobre a cor corrente
-int      arrayDeJogadas    [255];                         //Vetor para armazenar Jogadas
-int      vez                   = 0;					      //Variável para armazenara vez corrente
-GLfloat  corSelecionadaRGBAnterior[3] = {1.0f,1.0f,1.0f}; 
-int mudarCorSelecionadaRGBAnterior= 0;
+char     arrayCharCores           [5] = {'R','G','B','Y','W'};   //Identificadores das cores
+int      arrayIntCores            [5] = {0, 1, 2, 3, 4};         //Identificadores numérico das cores
+int      intCores                     = 999;                     //Variável para receber código proveniente do iedentificador de cores
+GLfloat  corSelecionadaRGB        [3] = {1.0f,0.0f,0.0f};        //Vetor para armazenar informação sobre a cor corrente
+GLfloat  corSelecionadaRGBAnterior[3] = {1.0f,0.0f,0.0f};        //Vetor para armazenar informação sobre a cor anterior
+int      arrayDeJogadas           [255];                         //Vetor para armazenar Jogadas realizados pelo jogador
+int      arrayDeQuebraCabeca	  [255];					     //Vetor para armazenar sequencia de cores a ser mermorizada pelo jogador
+int      vez                          = 0;					     //Variável para armazenara vez corrente
+int mudarCorSelecionadaRGBAnterior    = 0;                       //Variável para auxílio quando ocorrer mudança de cor
+
+
 
 /**
 * Função para montagem do quadrado conforme codgo de cor informado
@@ -31,6 +34,13 @@ char remontaQuadrado(int color){
     
 	switch (color) {
             case 0:
+            	mudarCorSelecionadaRGBAnterior=1;
+				if(mudarCorSelecionadaRGBAnterior == 1)   {
+					corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
+				    corSelecionadaRGBAnterior[1] = corSelecionadaRGB[1];
+					corSelecionadaRGBAnterior[2] = corSelecionadaRGB[2];
+				    mudarCorSelecionadaRGBAnterior = 0;
+  				}
                 //printf("Vermelho");
                 corSelecinada  = 'R';
                 corSelecionadaRGB[0]=1.0f;
@@ -41,14 +51,15 @@ char remontaQuadrado(int color){
 				y    = 0.0f;
 				angle = 0.0f;
 				intCores = 999;  //Para evitar loop infinito
+			break;
+            case 1:
+            	mudarCorSelecionadaRGBAnterior=1;
 				if(mudarCorSelecionadaRGBAnterior == 1)   {
 					corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
 				    corSelecionadaRGBAnterior[1] = corSelecionadaRGB[1];
 					corSelecionadaRGBAnterior[2] = corSelecionadaRGB[2];
 				    mudarCorSelecionadaRGBAnterior = 0;
   				}
-			break;
-            case 1:
                 //printf("Verde");
                 corSelecinada = 'V';
 				corSelecionadaRGB[0]=0.0f;
@@ -59,15 +70,15 @@ char remontaQuadrado(int color){
 				y    = 0.0f;
 				angle = 0.0f;
 				intCores = 999;    //Para evitar loop infinito
-				mudarCorSelecionadaRGBAnterior=1;
-					if(mudarCorSelecionadaRGBAnterior == 1)   {
+				break;
+            case 2:
+            	mudarCorSelecionadaRGBAnterior=1;
+				if(mudarCorSelecionadaRGBAnterior == 1)   {
 					corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
 				    corSelecionadaRGBAnterior[1] = corSelecionadaRGB[1];
 					corSelecionadaRGBAnterior[2] = corSelecionadaRGB[2];
 				    mudarCorSelecionadaRGBAnterior = 0;
   				}
-				break;
-            case 2:
                 //printf("Azul");
 				corSelecinada = 'B';
 				corSelecionadaRGB[0]=0.0f;
@@ -78,14 +89,15 @@ char remontaQuadrado(int color){
 				y    = 0.0f;
 				angle = 0.0f;
 				intCores = 999;  //Para evitar loop infinito
+				break;
+            case 3:
+            	mudarCorSelecionadaRGBAnterior=1;
 				if(mudarCorSelecionadaRGBAnterior == 1)   {
 					corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
 				    corSelecionadaRGBAnterior[1] = corSelecionadaRGB[1];
 					corSelecionadaRGBAnterior[2] = corSelecionadaRGB[2];
 				    mudarCorSelecionadaRGBAnterior = 0;
   				}
-				break;
-            case 3:
                 //printf("Amarelo");
                 corSelecinada = 'Y';
                 corSelecionadaRGB[0]=1.0f;
@@ -96,15 +108,17 @@ char remontaQuadrado(int color){
 				y    = 0.0f;
 				angle = 0.0f;
 				intCores = 999;  //Para evitar loop infinito
+				
+				break;
+            case 4:
+                mudarCorSelecionadaRGBAnterior=1;
 				if(mudarCorSelecionadaRGBAnterior == 1)   {
 					corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
 				    corSelecionadaRGBAnterior[1] = corSelecionadaRGB[1];
 					corSelecionadaRGBAnterior[2] = corSelecionadaRGB[2];
 				    mudarCorSelecionadaRGBAnterior = 0;
   				}
-				break;
-            case 4:
-                //printf("Branco");
+				//printf("Branco");
                 corSelecinada = 'W';
                 corSelecionadaRGB[0]=1.0f;
 				corSelecionadaRGB[1]=1.0f;
@@ -114,12 +128,7 @@ char remontaQuadrado(int color){
 				y    = 0.0f;
 				angle = 0.0f;
 				intCores = 999;    //Para evitar loop infinito
-				if(mudarCorSelecionadaRGBAnterior == 1)   {
-					corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
-				    corSelecionadaRGBAnterior[1] = corSelecionadaRGB[1];
-					corSelecionadaRGBAnterior[2] = corSelecionadaRGB[2];
-				    mudarCorSelecionadaRGBAnterior = 0;
-  				}
+				
 				break;
             case 10:
             	intCores = 999;    //Para evitar loop infinito
@@ -321,6 +330,14 @@ void jogar( int idCor, char cor){
 
 }
 
+
+void montaQuebracabeça (void){
+	
+	for(i=0; i< vez; i++){
+	    arrayDeQuebraCabeca[i] = rand() % 5;);   
+   	}	
+	
+}
 
 void Set (int *N, int i) // função com um parâmetro por referência
 {
