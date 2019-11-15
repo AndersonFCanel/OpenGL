@@ -30,8 +30,9 @@ GLfloat contPassoDesenho  = 0.0f;
 char     arrayCharCores           [5] = {'R','G','B','Y','W'};   //Identificadores das cores
 int      arrayIntCores            [5] = {0, 1, 2, 3, 4};         //Identificadores numérico das cores
 int      intCores                     = 999;                     //Variável para receber código proveniente do iedentificador de cores
-GLfloat  corSelecionadaRGB        [3] = {1.0f,0.0f,0.0f};        //Vetor para armazenar informação sobre a cor corrente
+GLfloat  corSelecionadaRGB        [3] = {0.0f,0.0f,0.0f};        //Vetor para armazenar informação sobre a cor corrente
 GLfloat  corSelecionadaRGBAnterior[3] = {0.8f,0.8f,0.8f};        //Vetor para armazenar informação sobre a cor anterior
+GLfloat tx = -0.6f; 
 int      arrayDeJogadas           [255];                         //Vetor para armazenar Jogadas realizados pelo jogador
 int      arrayDeQuebraCabeca	  [255];					     //Vetor para armazenar sequencia de cores a ser mermorizada pelo jogador
 int      vez                            = 0;    			     //Variável para armazenara vez corrente
@@ -39,6 +40,7 @@ int      mudarCorSelecionadaRGBAnterior = 0;                     //Variável para
 int      contGlogal						= 0;                     //Variável responsável pela contagem do loop corrente até que se inicie uma nova rodada
 int      exibirQuebraCabeca             = 0;					 //Variável para saber se é para informar gráficamente ao jogador a existência de nova rodada
 int      gameover                       = 0;					 //essa é obivia
+int      exibirMenssagemJogar           = 0; 
 
 /**
 * Função para montagem do quadrado conforme código de cor informado
@@ -244,26 +246,36 @@ void desenha() {
    glPopMatrix();                      // Restore the model-view matrix
    
    	//mensagem para jogador entrar com os dados
-	if(vez == 0){
+	if(exibirMenssagemJogar == 1 && vez > 0){
+	
+		
 		glPushMatrix();
 		  glBegin(GL_QUADS);
 		      glColor3f ( 0.0f,  0.0f,  0.0f);
-		      	glVertex2f(-0.9f, 0.6f);
-		      	glVertex2f( 0.9f,  0.6f);
-				glVertex2f( 0.9f, 0.9f);
-				glVertex2f(-0.9f,  0.9f);
+		        glVertex2f(-0.6f, 0.6f);
+		      	glVertex2f( 0.6f,  0.6f);
+				glVertex2f( 0.6f, 0.9f);
+				glVertex2f(-0.6f,  0.9f);
 		  glEnd();
 		glPopMatrix();
 		
 		glPushMatrix();
-		   glTranslatef(-0.4f, 0.7f, 0.0f);
+		   //glTranslatef(-0.2f, 0.4f, 0.0f);
+		   glTranslatef( tx, 0.7f, 0.0f);	
 		   glScalef(0.001f, 0.001f, 0.0);
-		   DesenhaTexto("HERE GO", 1.0f,1.0f,1.0f);
+		   DesenhaTexto("ENJOY", 1.0f,1.0f,1.0f);
 		glPopMatrix();
+		
+		tx+=0.0001f;
+		
+		if(tx >= 0.22f){
+			tx = -0.6f;
+		}
+		
 	}
    
     //mensagem de gamer over
-	if(contGlogal == vez && vez > 0){
+	if(gameover == 1){
 		glPushMatrix();
 		  glBegin(GL_QUADS);
 		      glColor3f ( 0.0f,  0.0f,  0.0f);
@@ -328,9 +340,9 @@ void Anima(int value)
 {
 	
 	if( contPassoDesenho < 0.5f){
-	  contPassoDesenho += 0.1f;
-      x    += 0.1f;
-      y    += 0.1f;
+	  contPassoDesenho += 0.05f;
+      x    += 0.05f;
+      y    += 0.05;
     }
    
    
@@ -343,10 +355,12 @@ void Anima(int value)
  	   // glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
 		imprimeQuebraCabeca(arrayDeQuebraCabeca[contGlogal]);
 		printf("\nContagem LOOP corrente: %d",contGlogal);
-		printf(" - Codigo da cor a ser exibida: %d",arrayDeQuebraCabeca[contGlogal]);	
+		printf(" - Codigo da cor a ser exibida: %d",arrayDeQuebraCabeca[contGlogal]);
+	    printf(" - VEZ: %d",vez);	
 		
 		if( contGlogal == vez ){
 			exibirQuebraCabeca = 0;
+			exibirMenssagemJogar = 1;
 		}
 		
 		x    = 0.6f;
@@ -358,7 +372,7 @@ void Anima(int value)
 
 	// Redesenha o objeto em outra posição
 	glutPostRedisplay();
-	glutTimerFunc(300,Anima, 1);
+	glutTimerFunc(250,Anima, 1);
 }
  
 void AlteraTamanhoJanela(GLsizei w, GLsizei h)
@@ -403,65 +417,76 @@ void Teclado (unsigned char key, int x, int y)
 		    jogar(0);
 		    montaQuebracabeca();
 		    contGlogal = 0;
+    		exibirMenssagemJogar = 0;
 			break;
 		case 'r':   //VERMELHO    
 		    intCores = 0;
 		    jogar(0);
 		    montaQuebracabeca();
 			contGlogal = 0;
+			exibirMenssagemJogar = 0;
 			break;	
 		case 'G' :  //VERDE
 			jogar(1);	
 			intCores = 1;
 			montaQuebracabeca();
 			contGlogal = 0;
+			exibirMenssagemJogar = 0;
 			break;
 		case 'g':  //VERDE
 			jogar(1);	
 			intCores = 1;
 			montaQuebracabeca();
 			contGlogal = 0;
+			exibirMenssagemJogar = 0;
 			break;
 		case 'B':   //AZUL
 			intCores = 2;
             jogar(2);
             montaQuebracabeca();
 			contGlogal = 0;
+			exibirMenssagemJogar = 0;
 			break;
 		case  'b':   //AZUL
 			intCores = 2;
             jogar(2);
             montaQuebracabeca();
             contGlogal = 0;
+			exibirMenssagemJogar = 0;
 			break;	
 		case 'Y':	//AMARELO
 			intCores = 3;
 		    jogar(3);
 		    montaQuebracabeca();
 		    contGlogal = 0;
+			exibirMenssagemJogar = 0;
 			break;
 		case 'y':	//AMARELO
 			intCores = 3;
 		    jogar(3);
 		    montaQuebracabeca();
 		    contGlogal = 0;
+			exibirMenssagemJogar = 0;
 			break;	
 		case 'W' :	//BRANCO
 			intCores = 4;
 		    jogar(4);
 		    montaQuebracabeca();
 		    contGlogal = 0;
+			exibirMenssagemJogar = 0;
 			break;
 		case 'w' :	//BRANCO
 			intCores = 4;
 		    jogar(4);
 		    montaQuebracabeca();
 		    contGlogal = 0;
+    		exibirMenssagemJogar = 0;
 			break;
 		case 'S' :	//INFORMAR JOGADAS //===>>> essa opção saíara
 			intCores = 999;
 			exibirQuebraCabeca = 1;
 			gameover = 0;
+    		exibirMenssagemJogar = 0;
 			break;
 		case 's' :	//INFORMAR JOGADAS //===>>> essa opção saíara
 			intCores = 999;
@@ -471,8 +496,8 @@ void Teclado (unsigned char key, int x, int y)
 		case 'N' :	//NEW GAME
 		
 			for(i=0; i<= vez; i++){
-				arrayDeQuebraCabeca[i] = 0;	   //===>>> essa opção saíara
-				arrayDeJogadas[i] = 0;
+				arrayDeQuebraCabeca[i] = 9;	   //===>>> essa opção saíara
+				arrayDeJogadas[i] = 9;
 			}
 			vez = 0;
 			exibirQuebraCabeca = 0;
@@ -488,6 +513,8 @@ void Teclado (unsigned char key, int x, int y)
 			corSelecionadaRGB[1]=0.0f;
 			corSelecionadaRGB[2]=0.0f;
 			
+			exibirMenssagemJogar = 0;
+							
 			contPassoDesenho = 0.0f;
 			x    = 0.0f;
 			y    = 0.0f;
@@ -543,7 +570,7 @@ void montaQuebracabeca(void){
 	printf("\nQuebra Cabeca: ");//===>>> essa opção saíara
 	int valorRandomico = 0;
 	
-	if(vez != 0){
+	if(vez != 0 && gameover != 1){
 	 do{	
 		valorRandomico = rand() % 5;
 		Set(&arrayDeQuebraCabeca[vez], valorRandomico);	
