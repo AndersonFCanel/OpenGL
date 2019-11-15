@@ -229,16 +229,16 @@ void desenha() {
 		glPushMatrix();
 		  glBegin(GL_QUADS);
 		      glColor3f ( 1.0f,  0.0f,  0.0f);
-		      glVertex3f(-0.3f,  0.15f, 0.0f);
-		      glVertex3f( 0.3f,  0.15f, 0.0f);
-		      glVertex3f( 0.3f, -0.1f,  0.0f);
-		      glVertex3f(-0.3f, -0.1,   0.0f);
+		      	glVertex2f(-0.5f, -0.5f);
+				glVertex2f( 0.5f, -0.5f);
+				glVertex2f( 0.5f,  0.5f);
+				glVertex2f(-0.5f,  0.5f);
 		  glEnd();
 		glPopMatrix();
 		
 		glPushMatrix();
-		   glTranslatef(-0.25f, 0.0f, 0.0f);
-		   glScalef(0.07f, 0.07f, 0.0);
+		   //glTranslatef(-0.25f, 0.0f, 0.0f);
+		   //glScalef(0.07f, 0.07f, 0.0);
 		   DesenhaTexto("GAMEOVER", 1.0,1.0,1.0);
 		glPopMatrix();
 	}
@@ -305,8 +305,8 @@ void Anima(int value)
 	if((contGlogal <= vez && contPassoDesenho >= 0.5f || exibirQuebraCabeca >=1 ) && gameover == 0 ){
  	   // glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
 		imprimeQuebraCabeca(arrayDeQuebraCabeca[contGlogal]);
-		printf("\ncg - %d",contGlogal);
-		printf("\ncgaq - %d",arrayDeQuebraCabeca[contGlogal]);	
+		printf("\nContagem do Vetor: %d",contGlogal, " - ");
+		printf("Codigo da cor a ser exibida: %d",arrayDeQuebraCabeca[contGlogal]);	
 		exibirQuebraCabeca = 0;
     	contGlogal++;
 	}
