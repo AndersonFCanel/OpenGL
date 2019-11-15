@@ -305,8 +305,8 @@ void Anima(int value)
 	if((contGlogal <= vez && contPassoDesenho >= 0.5f || exibirQuebraCabeca >=1 ) && gameover == 0 ){
  	   // glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
 		imprimeQuebraCabeca(arrayDeQuebraCabeca[contGlogal]);
-		printf("\nContagem do Vetor: %d",contGlogal, " - ");
-		printf("Codigo da cor a ser exibida: %d",arrayDeQuebraCabeca[contGlogal]);	
+		printf("\nContagem LOOP corrente: %d",contGlogal);
+		printf(" - Codigo da cor a ser exibida: %d",arrayDeQuebraCabeca[contGlogal]);	
 		exibirQuebraCabeca = 0;
     	contGlogal++;
 	}
