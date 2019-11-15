@@ -5,9 +5,10 @@
 #include <stdlib.h>// necessário p/ as funções rand() e srand()
 #include<time.h>//necessário p/ função time()
 
-/* Jogo da memória tipo genius
+/* Jogo da memória tipo genius,
 * INTRUÇÕES E TECLAS PARA O JOGO: 
-* Aguaradar uma sequência de cores e depois repetilas através das teclas correspondentes,
+* Guardar sequências de cores e depois repeti-las através das teclas correspondentes:
+
 * R / r -  Vermelho
 * G / g -  Verde
 * B / b -  Azul
@@ -15,7 +16,7 @@
 * W / w -  Branco
 *
 * Quando digitar a sequência anterior completa, pressionar S para próxima etapa. 
-* S / s - Iniciar próxima rodada
+* Para Iniciar próxima rodada pressionar S / s.
 */
 
 
@@ -27,23 +28,37 @@ GLfloat y     = 0.0f;      //Valor de y corrente
 GLfloat contPassoDesenho  = 0.0f; 
  
 //Variáveis para controle do jogo 
+//Identificador das cores
 char     arrayCharCores           [5] = {'R','G','B','Y','W'};   //Identificadores das cores
 int      arrayIntCores            [5] = {0, 1, 2, 3, 4};         //Identificadores numérico das cores
-int      idCor                     = 999;                     //Variável para receber código proveniente do iedentificador de cores
+int      idCor                    = 9;                          //Variável para receber código proveniente do iedentificador de cores
+
+//RGB dos objetos
 GLfloat  corSelecionadaRGB        [3] = {0.0f,0.0f,0.0f};        //Vetor para armazenar informação sobre a cor corrente
 GLfloat  corSelecionadaRGBAnterior[3] = {0.8f,0.8f,0.8f};        //Vetor para armazenar informação sobre a cor anterior
-GLfloat tx = -0.6f; 
-int      arrayDeJogadas           [255];                         //Vetor para armazenar Jogadas realizados pelo jogador
-int      arrayDeQuebraCabeca      [255];                         //Vetor para armazenar sequencia de cores a ser mermorizada pelo jogador
-int      vez                            = 0;                     //Variável para armazenara vez corrente
 int      mudarCorSelecionadaRGBAnterior = 0;                     //Variável para auxílio quando ocorrer mudança de cor
-int      contIteracaoNaRodadaCorrente   = 0;                     //Variável responsável pela contagem do loop corrente até que se inicie uma nova rodada
+
+//Translação do texto
+GLfloat tx = -0.6f; 
+
+
+int      arrayDeJogadas                [255];                     //Vetor para armazenar Jogadas realizados pelo jogador
+int      arrayDeGuardaSequenciaDeCores [255];                     //Vetor para armazenar sequencia de cores a ser mermorizada pelo jogador
+
+//Controladores
 int      exibirSequenciaMemorizavel     = 0;                     //Variável para saber se é para informar gráficamente ao jogador a existência de nova rodada
-int      gameover                       = 0;                     //essa é obivia
-int      exibirMenssagemJogar           = 0; 
-int      contJogadaCorrente             = 0;
 int      jogando                        = 0;
 int      aguardaTecla = 1;
+int      gameover                       = 0;                     //essa é obivia
+int      exibirMenssagemJogar           = 0; 
+
+//Contadores
+int      vez                            = 0;                     //Variável para armazenara vez corrente
+int      contIteracaoNaRodadaCorrente   = 0;                     //Variável responsável pela contagem do loop corrente até que se inicie uma nova rodada
+int      contJogadaCorrente             = 0;
+int      contSizeArrayDeJogada          = 0;
+int      contSizeGuardaSequenciaDeCores = 0;
+
 
 /**
 * Função para montagem do quadrado conforme código de cor informado
@@ -72,7 +87,7 @@ char remontaQuadrado(int color){
                 x    = 0.0f;
                 y    = 0.0f;
                 angle = 0.0f;
-                idCor = 999;  //Para evitar loop infinito
+                idCor = 9;  //Para evitar loop infinito
             break;
             case 1:
                 mudarCorSelecionadaRGBAnterior=1;
@@ -91,7 +106,7 @@ char remontaQuadrado(int color){
                 x    = 0.0f;
                 y    = 0.0f;
                 angle = 0.0f;
-                idCor = 999;    //Para evitar loop infinito
+                idCor = 9;    //Para evitar loop infinito
                 break;
             case 2:
                 mudarCorSelecionadaRGBAnterior=1;
@@ -110,7 +125,7 @@ char remontaQuadrado(int color){
                 x    = 0.0f;
                 y    = 0.0f;
                 angle = 0.0f;
-                idCor = 999;  //Para evitar loop infinito
+                idCor = 9;  //Para evitar loop infinito
                 break;
             case 3:
                 mudarCorSelecionadaRGBAnterior=1;
@@ -129,7 +144,7 @@ char remontaQuadrado(int color){
                 x    = 0.0f;
                 y    = 0.0f;
                 angle = 0.0f;
-                idCor = 999;  //Para evitar loop infinito
+                idCor = 9;  //Para evitar loop infinito
                 
                 break;
             case 4:
@@ -149,11 +164,11 @@ char remontaQuadrado(int color){
                 x    = 0.0f;
                 y    = 0.0f;
                 angle = 0.0f;
-                idCor = 999;    //Para evitar loop infinito
+                idCor = 9;    //Para evitar loop infinito
                 
                 break;
             case 10:
-                idCor = 999;    //Para evitar loop infinito
+                idCor = 9;    //Para evitar loop infinito
                 
                 printf("\nVEZ: "+ vez) ;   
                 
@@ -167,7 +182,7 @@ char remontaQuadrado(int color){
             default:
             //  printf("Houve algum problema com o vetor de cores!");
                 corSelecinada ='X'; 
-                idCor = 999;    //Para evitar loop infinito
+                idCor = 9;    //Para evitar loop infinito
             break;  
          }
              
@@ -355,9 +370,9 @@ void Anima(int value)
    
     if((contIteracaoNaRodadaCorrente <= vez && contPassoDesenho >= 0.5f || exibirSequenciaMemorizavel >=1 ) && gameover == 0 ){
        // glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
-        imprimeQuebraCabeca(arrayDeQuebraCabeca[contIteracaoNaRodadaCorrente]);
+        imprimeQuebraCabeca(arrayDeGuardaSequenciaDeCores[contIteracaoNaRodadaCorrente]);
         printf("\nContagem LOOP corrente: %d",contIteracaoNaRodadaCorrente);
-        printf(" - Codigo da cor a ser exibida: %d",arrayDeQuebraCabeca[contIteracaoNaRodadaCorrente]);
+        printf(" - Codigo da cor a ser exibida: %d",arrayDeGuardaSequenciaDeCores[contIteracaoNaRodadaCorrente]);
         printf(" - VEZ: %d",vez);   
         
         if( contIteracaoNaRodadaCorrente == vez ){
@@ -368,7 +383,7 @@ void Anima(int value)
         x    = 0.6f;
         y    = 0.6f;
         
-        printf(" \n- Codigo da cor a informada pelo usuario: %d",arrayDeJogadas[contIteracaoNaRodadaCorrente]);
+        printf(" \n- Codigo da cor informada pelo usuario: %d",arrayDeJogadas[contIteracaoNaRodadaCorrente]);
         
 		contIteracaoNaRodadaCorrente++;
     }
@@ -411,7 +426,7 @@ void EspecificaParametrosVisualizacao(void)
 void reset (){
 	int i = 0;
 	for(i=0; i<= vez; i++){
-		arrayDeQuebraCabeca[i] = 9; 	   //===>>> essa opção saíara
+		arrayDeGuardaSequenciaDeCores[i] = 9; 	   //===>>> essa opção saíara
 		arrayDeJogadas[i] = 9;
 	}
 	vez = 0;
@@ -450,8 +465,9 @@ void setaVariaveisAoPressionarTecla(int n) {
 		contJogadaCorrente +=1;
 		aguardaTecla = 1;
 	    idCor = n;                //Set cor 			
+		vez++;
 		jogar(n);                    //ALimenta arrayDeJogadas
-		
+		montaQuebracabeca();
 }
  
 // Função callback chamada para gerenciar eventos de teclas normais
@@ -507,13 +523,13 @@ void Teclado (unsigned char key, int x, int y)
 				//montaQuebracabeca()
 				break;
 			case 'S' :  //INFORMAR JOGADAS //===>>> essa opção saíara
-				idCor = 999;
+				idCor = 9;
 				exibirSequenciaMemorizavel = 1;
 				gameover = 0;
 				exibirMenssagemJogar = 0;
 				break;
 			case 's' :  //INFORMAR JOGADAS //===>>> essa opção saíara
-				idCor = 999;
+				idCor = 9;
 				exibirSequenciaMemorizavel = 1;
 				gameover = 0;
 				break;
@@ -534,8 +550,8 @@ void Teclado (unsigned char key, int x, int y)
 				break;
 				case 'N' :  //NEW GAME
 			
-				for(i=0; i<= vez; i++){
-					arrayDeQuebraCabeca[i] = 9;    //===>>> essa opção saíara
+				for(i=0; i<= vez; i+=1){
+					arrayDeGuardaSequenciaDeCores[i] = 9;    //===>>> essa opção saíara
 					arrayDeJogadas[i] = 9;
 				}
 				vez = 0;
@@ -580,7 +596,7 @@ void jogar( int idCor, char cor){
 			jogando = 0;
 			aguardaTecla = 0;
 			checarCoincidenciaDosArrays();
-			montaQuebracabeca();
+		//	montaQuebracabeca();
 		}
     //Set(&arrayDeJogadas [contJogadaCorrente], idCor);
     
@@ -598,14 +614,14 @@ void jogar( int idCor, char cor){
 
 int checarCoincidenciaDosArrays(){
     int i=0;
-    for(i=0; i< vez; i++){
-        if(arrayDeJogadas[i] == arrayDeQuebraCabeca[i] || arrayDeJogadas[i] == 999) {
+    for(i=0; i<= contSizeGuardaSequenciaDeCores; i++){
+        if(arrayDeJogadas[i] == arrayDeGuardaSequenciaDeCores[i] || arrayDeJogadas[i] == 9) {
 			jogando = 1;
         }else{
                 printf("\nVoce errou a sequencia ");
                 printf("\nSequencia informada pela maquina:  ");
-                for(i=0; i<= vez; i++){
-                   Imprime(arrayDeQuebraCabeca[i]); 
+                for(i=0; i<= vez; i+=1){
+                   Imprime(arrayDeGuardaSequenciaDeCores[i]); 
                 }   
                 printf("\nSequencia informada por voce:  ");
                 for(i=0; i<= vez; i++){
@@ -626,26 +642,23 @@ void montaQuebracabeca(void){
     printf("\nQuebra Cabeca: ");//===>>> essa opção saíara
     int valorRandomico = 0;
     
-    if(vez != 0 && gameover != 1 && jogando >=1){
-     do{    
-        valorRandomico = rand() % 5;
-        printf("valorRandomico: " ,valorRandomico);
-		Set(&arrayDeQuebraCabeca[vez], valorRandomico); 
-      }while(valorRandomico == arrayDeQuebraCabeca[vez-1] );
-      printf("\nvalorRandomico inserido: ");
-      vez+=1;
+    if(vez != 0 && gameover != 1){
+     	do{    
+        	valorRandomico = rand() % 5;
+        	printf("valorRandomico: " ,valorRandomico);
+			Set(&arrayDeGuardaSequenciaDeCores[vez], valorRandomico);
+       }while(valorRandomico == arrayDeGuardaSequenciaDeCores[vez-1] );
+       contSizeGuardaSequenciaDeCores+=1; 
 	}else
-	if( jogando >= 0)
 	{   
-      valorRandomico = rand() % 5;
-      printf("valorRandomicoelse: " ,valorRandomico);
-      Set(&arrayDeQuebraCabeca[vez], valorRandomico); 
-      vez+=1;
-      printf("\nvalorRandomico inserido: ");
+     	 valorRandomico = rand() % 5;
+      	printf("valorRandomicoelse: " ,valorRandomico);
+      	Set(&arrayDeGuardaSequenciaDeCores[vez], valorRandomico); 
+    	contSizeGuardaSequenciaDeCores+=1; 
 	}
     
     for(i=0; i<= vez; i++){
-         Imprime(arrayDeQuebraCabeca[i]);      //===>>> essa opção saíara
+         Imprime(arrayDeGuardaSequenciaDeCores[i]);      //===>>> essa opção saíara
     }   
 }
 
