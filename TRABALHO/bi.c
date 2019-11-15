@@ -188,11 +188,10 @@ void desenha() {
    glMatrixMode(GL_MODELVIEW);     // To operate on Model-View matrix
    glLoadIdentity();               // Reset the model-view matrix
     
-    if(contIteracaoNaRodadaCorrente > 0 || vez == 0 ){//&& contJogadaCorrente >= vez ){
-  //  printf("DESENHANDO");
+    if(contIteracaoNaRodadaCorrente > 0 || vez == 0 ){
 	
 	//mensagem de Here go
-    if(vez == 0){
+    if(vez == 0 ){
         glPushMatrix();
           glBegin(GL_QUADS);
               glColor3f ( 0.0f,  0.0f,  0.0f);
@@ -345,7 +344,7 @@ void Anima(int value)
     }   
 
    
-    if((contIteracaoNaRodadaCorrente <= vez && contPassoDesenho >= 0.5f || exibirSequenciaMemorizavel >=1 ) && gameover == 0 ){
+    if((contIteracaoNaRodadaCorrente <= vez && contPassoDesenho >= 0.5f || exibirSequenciaMemorizavel >=1 ) && gameover == 0 && aguardandoJogadas !=1){
        // glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
         imprimeQuebraCabeca(arrayDeGuardaSequenciaDeCores[contIteracaoNaRodadaCorrente]);
         printf("\nContagem LOOP corrente: %d",contIteracaoNaRodadaCorrente);
@@ -451,15 +450,15 @@ void reset (){
 void executaRotinaGame(int n) {
 		contIteracaoNaRodadaCorrente = 0;
 		exibirMenssagemJogar = 0;
-	    contJogadaCorrente +=1;
+	    
 		aguardandoJogadas = 1;
 	    idCor = n;                //Set cor 			
 	
 		jogar(n);                    //ALimenta arrayDeJogadas
 	
 		checarCoincidenciaDosArrays();
-			vez++;
-		montaSequenciaMemorizavel();
+	    //vez++;
+		//montaSequenciaMemorizavel();
 	}
  
 // Função callback chamada para gerenciar eventos de teclas normais
@@ -540,16 +539,34 @@ void Teclado (unsigned char key, int x, int y)
 
 void jogar( int idCorInfo, char cor){
     int i = 0;
-    
-	Set(&arrayDeJogadas [vez], idCorInfo);
+   
+	Set(&arrayDeJogadas [contJogadaCorrente], idCorInfo);
+	contJogadaCorrente +=1;
+	/*if(contJogadaCorrente == vez){
+		
+		aguardandoJogadas=0;
+	}else{
+		aguardandoJogadas = 1;
+	}*/
+
 }
 
 int checarCoincidenciaDosArrays(){
     int i=0;
 
-    printf("\ncontJogadas: %d",contJogadaCorrente);
+    printf("\ncontJogadasCorrente: %d",contJogadaCorrente);
     printf("\nvez: %d",vez);
 
+	if(contJogadaCorrente >= vez){
+		aguardandoJogadas=0;
+		contJogadaCorrente =0;
+		vez++;
+	}else{
+		aguardandoJogadas = 1;
+	}
+	
+ if(aguardandoJogadas == 1){
+ 
     do{
     	printf("\nI: %d",i);
 	        if(arrayDeJogadas[i] == arrayDeGuardaSequenciaDeCores[i]) {
@@ -569,45 +586,17 @@ int checarCoincidenciaDosArrays(){
 	                return 0;
 	           }       
 			i++;	
-	}while( i<vez );	
- 
-    return 1;
+//	}while( i<vez );	
+	}while( i<contJogadaCorrente );
 }
 
-
-void montaSequenciaMemorizavel(void){
-    int i = 0;
-    /*srand(time(NULL));
-    printf("\nQuebra Cabeca: ");//===>>> essa opção saíara
-    int valorRandomico = 0;
-    if(gameover == 0  && aguardandoJogadas == 0){
-	
-    if(vez > 0){
-     	do{    
-        	valorRandomico = rand() % 5;
-        	printf("valorRandomico: " ,valorRandomico);
-			Set(&arrayDeGuardaSequenciaDeCores[vez], valorRandomico);
-       }while(valorRandomico == arrayDeGuardaSequenciaDeCores[vez-1] );
-       contSizeGuardaSequenciaDeCores++; 
-       aguardandoJogadas = 1;
-	}else
-	{   
-     	 valorRandomico = rand() % 5;
-      	printf("valorRandomicoelse: " ,valorRandomico);
-      	Set(&arrayDeGuardaSequenciaDeCores[vez], valorRandomico); 
-    	contSizeGuardaSequenciaDeCores++; 
-    	aguardandoJogadas = 1;
-	}
-    
-    for(i=0; i<= vez; i++){
-         Imprime(arrayDeGuardaSequenciaDeCores[i]);      //===>>> essa opção saíara
-    } 
-   }*/
+    return 1;
 }
 
 
 void Set (int *N, int i) // função com um parâmetro por referência
 {
+	printf("\nEntrou com: %d", i);
   *N = i;
 }
 
@@ -645,13 +634,8 @@ int main(int argc, char** argv) {
 
     if(vez == 0){
         reset();
-        int c = 0;
-
-montaSequenciaMemorizavel();
-
     }
-    //	Set(&arrayDeJogadas [0], 3);
-    	
+    
     // Define o modo de operação da GLUT
     glutInit(&argc, argv);             // Initialize GLUT
     glutInitDisplayMode(GLUT_DOUBLE);  // Enable double buffered mode
