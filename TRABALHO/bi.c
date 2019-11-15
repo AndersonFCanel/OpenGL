@@ -41,7 +41,7 @@ int      exibirQuebraCabeca             = 0;					 //Variável para saber se é par
 int      gameover                       = 0;					 //essa é obivia
 
 /**
-* Função para montagem do quadrado conforme codgo de cor informado
+* Função para montagem do quadrado conforme código de cor informado
 * Esta função zera o valor das variáveis para que seja criado um novo quadrado.
 */
 char remontaQuadrado(int color){
@@ -228,16 +228,16 @@ void desenha() {
 	if(gameover == 1){
 		glPushMatrix();
 		  glBegin(GL_QUADS);
-		      glColor3f (1.0, 0.0, 0.0);
-		      glVertex3f(-30,15,0);
-		      glVertex3f(30,15, 0);
-		      glVertex3f(30, -10,0);
-		      glVertex3f(-30,-10,0);
+		      glColor3f ( 1.0f,  0.0f,  0.0f);
+		      glVertex3f(-0.3f,  0.15f, 0.0f);
+		      glVertex3f( 0.3f,  0.15f, 0.0f);
+		      glVertex3f( 0.3f, -0.1f,  0.0f);
+		      glVertex3f(-0.3f, -0.1,   0.0f);
 		  glEnd();
 		glPopMatrix();
 		
 		glPushMatrix();
-		   glTranslatef(-25.0f, 0.0f, 0.0f);
+		   glTranslatef(-0.25f, 0.0f, 0.0f);
 		   glScalef(0.07f, 0.07f, 0.0);
 		   DesenhaTexto("GAMEOVER", 1.0,1.0,1.0);
 		glPopMatrix();
@@ -245,7 +245,7 @@ void desenha() {
 	   
    
    if(contGlogal >= vez){
-   	   glClear(GL_COLOR_BUFFER_BIT); 
+   	//   glClear(GL_COLOR_BUFFER_BIT); 
    }
    glutSwapBuffers();   // Double buffered - swap the front and back buffers
    
@@ -302,11 +302,12 @@ void Anima(int value)
  	}	
 
    
-	if(contGlogal <= vez && contPassoDesenho >= 0.5f || exibirQuebraCabeca >=1 ){
+	if((contGlogal <= vez && contPassoDesenho >= 0.5f || exibirQuebraCabeca >=1 ) && gameover == 0 ){
  	   // glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
 		imprimeQuebraCabeca(arrayDeQuebraCabeca[contGlogal]);
 		printf("\ncg - %d",contGlogal);
 		printf("\ncgaq - %d",arrayDeQuebraCabeca[contGlogal]);	
+		exibirQuebraCabeca = 0;
     	contGlogal++;
 	}
 
@@ -415,6 +416,7 @@ void Teclado (unsigned char key, int x, int y)
 		case 'S' :	//INFORMAR JOGADAS //===>>> essa opção saíara
 			intCores = 999;
 			exibirQuebraCabeca = 1;
+			gameover = 0;
 			break;
 		case 'i' :	//INFORMAR JOGADAS //===>>> essa opção saíara
 			intCores = 10;
@@ -458,6 +460,7 @@ int checarCoincidenciaDosArrays(){
 				   Imprime(arrayDeJogadas[i]);	
 				} 
 				return 0;
+				gameover = 1;
 		   }	   
 	}
 	return 1;
@@ -565,13 +568,13 @@ int main(int argc, char** argv) {
 	// Registra a função callback para tratamento das teclas ASCII
  	glutKeyboardFunc (Teclado);
  	
- 	if(contGlogal < vez){
+ /*	if(contGlogal < vez){
 		imprimeQuebraCabeca(arrayDeQuebraCabeca[contGlogal]);
 		printf("\ncgaq - %d",arrayDeQuebraCabeca[contGlogal]);
 		printf("\ncg - %d",contGlogal);
     	contGlogal++;
 	}
-
+*/
 
 	// Registra a função callback para tratamento das teclas especiais
 //	glutSpecialFunc (TeclasEspeciais);
