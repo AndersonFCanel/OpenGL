@@ -38,7 +38,7 @@ int      vez                            = 0;    			     //Variável para armazena
 int      mudarCorSelecionadaRGBAnterior = 0;                     //Variável para auxílio quando ocorrer mudança de cor
 int      contGlogal = 0;
 int      exibirQuebraCabeca              = 0;
-
+int      gameover                        = 0;
 
 /**
 * Função para montagem do quadrado conforme codgo de cor informado
@@ -171,20 +171,20 @@ char remontaQuadrado(int color){
 }
 
  
-/* Initialize OpenGL Graphics */
+/* Inicializa OpenGL Graphics */
 void initGL() {
    // Set "clearing" or background color
    glClearColor(0.8f, 0.8f, 0.8f, 0.8f); // White and opaque  
    	 	
 }
  
-/* Called back when there is no other event to be handled */
+/* Called back quando não há outro evento a ser tratado */
 void idle() {
-   glutPostRedisplay();   // Post a re-paint request to activate display()
+   glutPostRedisplay();   //Poste uma solicitação de nova pintura para ativar display()
 }
  
-/* Handler for window-repaint event. Call back when the window first appears and
-   whenever the window needs to be re-painted. */
+/* Manipulador para evento de repintar janelas. Callback quando a janela aparecer pela primeira vez e
+   sempre que a janela precisar ser pintada novamente. */
 void desenha() {
 	
    remontaQuadrado(intCores);
@@ -223,6 +223,27 @@ void desenha() {
    glEnd();
    glPopMatrix();                      // Restore the model-view matrix
    
+   
+    //mensagem de gamer over
+	if(gameover == 1){
+		glPushMatrix();
+		  glBegin(GL_QUADS);
+		      glColor3f (1.0, 0.0, 0.0);
+		      glVertex3f(-30,15,0);
+		      glVertex3f(30,15, 0);
+		      glVertex3f(30, -10,0);
+		      glVertex3f(-30,-10,0);
+		  glEnd();
+		glPopMatrix();
+		
+		glPushMatrix();
+		   glTranslatef(-25.0f, 0.0f, 0.0f);
+		   glScalef(0.07f, 0.07f, 0.0);
+		   DesenhaTexto("GAMEOVER", 1.0,1.0,1.0);
+		glPopMatrix();
+	}
+	   
+   
    if(contGlogal >= vez){
    	   glClear(GL_COLOR_BUFFER_BIT); 
    }
@@ -230,8 +251,21 @@ void desenha() {
    
  }
  
-/* Handler for window re-size event. Called back when the window first appears and
-   whenever the window is re-sized with its new width and height */
+//funcao que escreve texto na tela
+void DesenhaTexto(char *string, float r, float g, float b)
+{  
+        glColor3f(r, g, b);
+        // Posição no universo onde o texto será colocado          
+
+        // Exibe caracter a caracter
+        while(*string)
+             glutStrokeCharacter(GLUT_STROKE_ROMAN,*string++);
+} 
+ 
+ 
+ 
+/* Manipulador para evento de redimensionamento de janela. Chamado de volta quando a janela aparece pela primeira vez e
+   sempre que a janela for redimensionada com sua nova largura e altura */
 void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integer
    // Compute aspect ratio of the new window
    if (height == 0) height = 1;                // To prevent divide by 0
