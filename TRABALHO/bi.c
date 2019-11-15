@@ -433,15 +433,8 @@ void jogar( int idCor, char cor){
     Set(&arrayDeJogadas [vez], idCor);
     vez+=1;
  
-    int isVenceu =  checarCoincidenciaDosArrays();
- 
-    if (isVenceu == 1){
-	   printf("\nParabens voce acertou a sequencia!!!");
-	}else
-	{
-		printf("\nQue pena voce errou a sequencia!!!");
-	
-	}
+    checarCoincidenciaDosArrays();
+
 }
 
 int checarCoincidenciaDosArrays(){
