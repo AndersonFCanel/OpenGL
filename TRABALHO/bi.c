@@ -36,9 +36,9 @@ int      arrayDeJogadas           [255];                         //Vetor para ar
 int      arrayDeQuebraCabeca	  [255];					     //Vetor para armazenar sequencia de cores a ser mermorizada pelo jogador
 int      vez                            = 0;    			     //Variável para armazenara vez corrente
 int      mudarCorSelecionadaRGBAnterior = 0;                     //Variável para auxílio quando ocorrer mudança de cor
-int      contGlogal = 0;
-int      exibirQuebraCabeca              = 0;
-int      gameover                        = 0;
+int      contGlogal						= 0;                     //Variável responsável pela contagem do loop corrente até que se inicie uma nova rodada
+int      exibirQuebraCabeca             = 0;					 //Variável para saber se é para informar gráficamente ao jogador a existência de nova rodada
+int      gameover                       = 0;					 //essa é obivia
 
 /**
 * Função para montagem do quadrado conforme codgo de cor informado
