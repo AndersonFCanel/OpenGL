@@ -11,7 +11,7 @@ GLfloat fAspect;
 GLfloat angle = 0.0f;      // Rotação corrente
 GLfloat x     = 0.0f;      // Valor de x corrente
 GLfloat y     = 0.0f;      //Valor de y corrente
-GLfloat cont  = 0.0f; 
+GLfloat contPassoDesenho  = 0.0f; 
  
 //Variáveis para controle do jogo 
 char     arrayCharCores           [5] = {'R','G','B','Y','W'};   //Identificadores das cores
@@ -48,7 +48,7 @@ char remontaQuadrado(int color){
                 corSelecionadaRGB[0]=1.0f;
 				corSelecionadaRGB[1]=0.0f;
 				corSelecionadaRGB[2]=0.0f;
-				cont = 0.0f;
+				contPassoDesenho = 0.0f;
 				x    = 0.0f;
 				y    = 0.0f;
 				angle = 0.0f;
@@ -67,7 +67,7 @@ char remontaQuadrado(int color){
 				corSelecionadaRGB[0]=0.0f;
 				corSelecionadaRGB[1]=1.0f;
 				corSelecionadaRGB[2]=0.0f;
-				cont = 0.0f;
+				contPassoDesenho = 0.0f;
 				x    = 0.0f;
 				y    = 0.0f;
 				angle = 0.0f;
@@ -86,7 +86,7 @@ char remontaQuadrado(int color){
 				corSelecionadaRGB[0]=0.0f;
 				corSelecionadaRGB[1]=0.0f;
 				corSelecionadaRGB[2]=1.0f;
-				cont = 0.0f;
+				contPassoDesenho = 0.0f;
 				x    = 0.0f;
 				y    = 0.0f;
 				angle = 0.0f;
@@ -105,7 +105,7 @@ char remontaQuadrado(int color){
                 corSelecionadaRGB[0]=1.0f;
 				corSelecionadaRGB[1]=1.0f;
 				corSelecionadaRGB[2]=0.0f;
-                cont = 0.0f;
+                contPassoDesenho = 0.0f;
 				x    = 0.0f;
 				y    = 0.0f;
 				angle = 0.0f;
@@ -125,7 +125,7 @@ char remontaQuadrado(int color){
                 corSelecionadaRGB[0]=1.0f;
 				corSelecionadaRGB[1]=1.0f;
 				corSelecionadaRGB[2]=1.0f;
-				cont = 0.0f;
+				contPassoDesenho = 0.0f;
 				x    = 0.0f;
 				y    = 0.0f;
 				angle = 0.0f;
@@ -161,10 +161,6 @@ void initGL() {
    // Set "clearing" or background color
    glClearColor(0.8f, 0.8f, 0.8f, 0.8f); // White and opaque  
    	 	
- 	if(contGlogal < vez){
-		imprimeQuebraCabeca(arrayDeQuebraCabeca[contGlogal]);
-    	contGlogal++;
-	}
 }
  
 /* Called back when there is no other event to be handled */
@@ -212,7 +208,7 @@ void desenha() {
       glVertex2f(-x,  y);
    glEnd();
    glPopMatrix();                      // Restore the model-view matrix
- 
+
    glutSwapBuffers();   // Double buffered - swap the front and back buffers
    
  }
@@ -243,17 +239,28 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
 void Anima(int value)
 {
 	
-	if( cont < 0.5f){
-	  cont += 0.1f;
+	if( contPassoDesenho < 0.5f){
+	  contPassoDesenho += 0.1f;
       x    += 0.1f;
       y    += 0.1f;
     }
    
    
-   if(angle < 380.0f){
-   
-   		angle += 45.0f; 
+    if(angle < 380.0f){
+   		 angle += 45.0f; 
  	}	
+
+	   
+	if(contGlogal < vez && contPassoDesenho >= 0.5f){
+ 	  //  glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
+		imprimeQuebraCabeca(arrayDeQuebraCabeca[contGlogal]);
+		printf("\ncgaq - %d",arrayDeQuebraCabeca[contGlogal]);
+		printf("\ncg - %d",contGlogal);
+    	contGlogal++;
+    //	desenha();
+	}
+
+//	printf("TESTE");
 
 	// Redesenha o objeto em outra posição
 	glutPostRedisplay();
@@ -359,6 +366,7 @@ void Teclado (unsigned char key, int x, int y)
 			intCores = 10;
 			break;	
 		}
+			
 	glutPostRedisplay();
 }
 
@@ -521,6 +529,12 @@ int main(int argc, char** argv) {
 	// Registra a função callback para tratamento das teclas ASCII
  	glutKeyboardFunc (Teclado);
  	
+ 	if(contGlogal < vez){
+		imprimeQuebraCabeca(arrayDeQuebraCabeca[contGlogal]);
+		printf("\ncgaq - %d",arrayDeQuebraCabeca[contGlogal]);
+		printf("\ncg - %d",contGlogal);
+    	contGlogal++;
+	}
 
 
 	// Registra a função callback para tratamento das teclas especiais
