@@ -2,6 +2,9 @@
 #include <glut.h>  // GLUT, include glu.h and gl.h
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdlib.h>// necessário p/ as funções rand() e srand()
+#include<time.h>//necessário p/ função time()
+
 
 // Variáveis globais GL
 GLfloat fAspect;
@@ -20,7 +23,6 @@ int      arrayDeJogadas           [255];                         //Vetor para ar
 int      arrayDeQuebraCabeca	  [255];					     //Vetor para armazenar sequencia de cores a ser mermorizada pelo jogador
 int      vez                          = 0;					     //Variável para armazenara vez corrente
 int mudarCorSelecionadaRGBAnterior    = 0;                       //Variável para auxílio quando ocorrer mudança de cor
-
 
 
 /**
@@ -135,10 +137,10 @@ char remontaQuadrado(int color){
 				
 				printf("VEZ: "+ vez) ;   
    				
-   				printf("Jogada da rodada: ") ;
-   				
+   				printf("Jogada da rodada: ") ;//===>>> essa opção saíara
+   				printf("\n");
 	    		for(i=0; i< vez; i++){
-				   Imprime(arrayDeJogadas[i]);   
+				   Imprime(arrayDeJogadas[i]); //===>>> essa opção saíara  
    				}
    			break;
             
@@ -153,7 +155,6 @@ char remontaQuadrado(int color){
 
 }
 
- 
  
 /* Initialize OpenGL Graphics */
 void initGL() {
@@ -170,7 +171,8 @@ void idle() {
    whenever the window needs to be re-painted. */
 void desenha() {
 	
-   remontaQuadrado(intCores);	
+   remontaQuadrado(intCores);
+   	
    glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
    glMatrixMode(GL_MODELVIEW);     // To operate on Model-View matrix
    glLoadIdentity();               // Reset the model-view matrix
@@ -183,8 +185,8 @@ void desenha() {
 		glRotatef(0.0f, 0.0f, 0.0f, 1.0f); // rotate by angle in degrees
 		glBegin(GL_QUADS);                  // Each set of 4 vertices form a quad
 		glColor3f( corSelecionadaRGBAnterior[0],
-				 corSelecionadaRGBAnterior[1],
-				 corSelecionadaRGBAnterior[2]);     
+			       corSelecionadaRGBAnterior[1],
+				   corSelecionadaRGBAnterior[2]);     
 		glVertex2f(-0.5f, -0.5f);
 		glVertex2f( 0.5f, -0.5f);
 		glVertex2f( 0.5f,  0.5f);
@@ -289,27 +291,57 @@ void Teclado (unsigned char key, int x, int y)
 	{
 		case 27:	exit(0);	// ESC ?
 					break;
-		case 'R':    
+		case 'R':   //VERMELHO    
 		    intCores = 0;
 		    jogar(0);
+		    montaQuebracabeca();
 			break;
-		case 'G':
+		case 'r':   //VERMELHO    
+		    intCores = 0;
+		    jogar(0);
+		    montaQuebracabeca();
+			break;	
+		case 'G' :  //VERDE
 			jogar(1);	
 			intCores = 1;
+			montaQuebracabeca();
 			break;
-		case 'B':	
+		case 'g':  //VERDE
+			jogar(1);	
+			intCores = 1;
+			montaQuebracabeca();
+			break;
+		case 'B':   //AZUL
 			intCores = 2;
             jogar(2);
+            montaQuebracabeca();
 			break;
-		case 'Y':	
+		case  'b':   //AZUL
+			intCores = 2;
+            jogar(2);
+            montaQuebracabeca();
+			break;	
+		case 'Y':	//AMARELO
 			intCores = 3;
 		    jogar(3);
+		    montaQuebracabeca();
 			break;
-		case 'W':	
+		case 'y':	//AMARELO
+			intCores = 3;
+		    jogar(3);
+		    montaQuebracabeca();
+			break;	
+		case 'W' :	//BRANCO
 			intCores = 4;
 		    jogar(4);
+		    montaQuebracabeca();
 			break;
-		case 'I':	
+		case 'w' :	//BRANCO
+			intCores = 4;
+		    jogar(4);
+		    montaQuebracabeca();
+			break;
+		case 'i' :	//INFORMAR JOGADAS //===>>> essa opção saíara
 			intCores = 10;
 			break;	
 		}
@@ -318,25 +350,53 @@ void Teclado (unsigned char key, int x, int y)
 
 
 void jogar( int idCor, char cor){
-   
     int i = 0;
-   
     vez+=1;
-    
     Set(&arrayDeJogadas [vez], idCor);
-    
-    
-    //arrayDeJogadas [vez] = idCor;
+}
 
+int checarCoincidenciaDosArrays(){
+	int i=0;
+	for(i=0; i< vez; i++){
+		if(arrayDeJogadas[i] == arrayDeQuebraCabeca[i])	{
+			
+   		}else{
+		   		printf("\nVoce errou a sequencia ");
+		   		printf("\nSequencia informada pela maquina:  ");
+	   			for(i=0; i< vez; i++){
+				   Imprime(arrayDeQuebraCabeca[i]);	
+				}   
+			    printf("\nSequencia informada por voce:  ");
+			    for(i=0; i< vez; i++){
+				   Imprime(arrayDeJogadas[i]);	
+				} 
+				break;
+		   }	   
+	}
 }
 
 
-void montaQuebracabeça (void){
+void montaQuebracabeca(void){
+	int i = 0;
+	srand(time(NULL));
+	printf("\nQuebra Cabeca: ");//===>>> essa opção saíara
+	int valorRandomico = 0;
 	
-	for(i=0; i< vez; i++){
-	    arrayDeQuebraCabeca[i] = rand() % 5;);   
+	if(vez != 0){
+	 do{	
+		valorRandomico = rand() % 5;
+		Set(&arrayDeQuebraCabeca[vez], valorRandomico);	
+	  }while(valorRandomico == arrayDeQuebraCabeca[vez-1] );
+	}else{
+		do{	
+		valorRandomico = rand() % 5;
+		Set(&arrayDeQuebraCabeca[vez], valorRandomico);	
+	  }while(valorRandomico == arrayDeQuebraCabeca[vez] );
+	}
+	
+	for(i=0; i<= vez; i++){
+		 Imprime(arrayDeQuebraCabeca[i]);	   //===>>> essa opção saíara
    	}	
-	
 }
 
 void Set (int *N, int i) // função com um parâmetro por referência
@@ -351,6 +411,10 @@ void Set (int *N, int i) // função com um parâmetro por referência
  
 /* Main function: GLUT runs as a console application starting at main() */
 int main(int argc, char** argv) {
+
+	if(vez = 0){
+		montaQuebracabeca();
+	}
 
     // Define o modo de operação da GLUT
     glutInit(&argc, argv);             // Initialize GLUT
@@ -369,7 +433,7 @@ int main(int argc, char** argv) {
 	glutDisplayFunc(desenha);
    
    	// Register callback handler for window re-size event
-   glutReshapeFunc(reshape);       
+    glutReshapeFunc(reshape);       
   
     // Register callback handler if no other event
     glutIdleFunc(idle);           
