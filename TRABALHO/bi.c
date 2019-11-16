@@ -46,7 +46,7 @@ int      arrayDeGuardaSequenciaDeCores [255];                     //Vetor para a
 
 //Controladores
 int      exibirSequenciaMemorizavel     = 0;                     //Variável para saber se é para informar gráficamente ao jogador a existência de nova rodada
-int      aguardandoJogadas             = 1;
+int      aguardandoJogadas              = 0;
 int      gameover                       = 0;                     //essa é obivia
 int      exibirMenssagemJogar           = 0; 
 
@@ -188,7 +188,7 @@ void desenha() {
    glMatrixMode(GL_MODELVIEW);     // To operate on Model-View matrix
    glLoadIdentity();               // Reset the model-view matrix
     
-    if(contIteracaoNaRodadaCorrente > 0 || vez == 0 ){
+    if(contIteracaoNaRodadaCorrente > 0 || vez == 0  ){
 	
 	//mensagem de Here go
     if(vez == 0 ){
@@ -344,24 +344,30 @@ void Anima(int value)
     }   
 
    
-    if((contIteracaoNaRodadaCorrente <= vez && contPassoDesenho >= 0.5f || exibirSequenciaMemorizavel >=1 ) && gameover == 0 && aguardandoJogadas !=1){
+    if((contIteracaoNaRodadaCorrente <= vez && contPassoDesenho >= 0.5f || exibirSequenciaMemorizavel >=1 ) && gameover == 0 ){
        // glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
-        imprimeQuebraCabeca(arrayDeGuardaSequenciaDeCores[contIteracaoNaRodadaCorrente]);
-        printf("\nContagem LOOP corrente: %d",contIteracaoNaRodadaCorrente);
-        printf(" - Codigo da cor a ser exibida: %d",arrayDeGuardaSequenciaDeCores[contIteracaoNaRodadaCorrente]);
-        printf(" - VEZ: %d",vez);   
-        
-        if( contIteracaoNaRodadaCorrente == vez ){
-            exibirSequenciaMemorizavel = 0;
-            exibirMenssagemJogar = 1;
-        }
-        
-        x    = 0.5f;
-        y    = 0.5f;
-        
-        //printf(" \n- Codigo da cor informada pelo usuario: %d",arrayDeJogadas[contIteracaoNaRodadaCorrente]);
-        
-		contIteracaoNaRodadaCorrente++;
+			printf("\naguardandoJogadas: %d",aguardandoJogadas);
+			
+			if(aguardandoJogadas==0){
+				
+				imprimeQuebraCabeca(arrayDeGuardaSequenciaDeCores[contIteracaoNaRodadaCorrente]);
+		        printf("\nContagem LOOP corrente: %d",contIteracaoNaRodadaCorrente);
+		        printf(" - Codigo da cor a ser exibida: %d",arrayDeGuardaSequenciaDeCores[contIteracaoNaRodadaCorrente]);
+		        printf(" - VEZ: %d",vez);   
+		        
+		        if( contIteracaoNaRodadaCorrente == vez ){
+		            exibirSequenciaMemorizavel = 0;
+		            exibirMenssagemJogar = 1;
+		        }
+		        
+		        x    = 0.5f;
+		        y    = 0.5f;
+		        
+		        //printf(" \n- Codigo da cor informada pelo usuario: %d",arrayDeJogadas[contIteracaoNaRodadaCorrente]);
+		        
+				contIteracaoNaRodadaCorrente++;
+				
+			}
     }
 
 //  printf("TESTE");
@@ -442,7 +448,7 @@ void reset (){
 	
 	contIteracaoNaRodadaCorrente   = 0;                     //Variável responsável pela contagem do loop corrente até que se inicie uma nova rodada
     contJogadaCorrente             = 0;
-	aguardandoJogadas = 1;
+	aguardandoJogadas = 0;
 
 	
 }
