@@ -34,7 +34,7 @@ int      arrayIntCores            [5] = {0, 1, 2, 3, 4};         //Identificador
 int      idCor                    ;                          //Variável para receber código proveniente do iedentificador de cores
 
 //RGB dos objetos
-GLfloat  corSelecionadaRGB        [3] = {0.0f,0.0f,0.0f};        //Vetor para armazenar informação sobre a cor corrente
+GLfloat  corSelecionadaRGB        [3] = {0.8f,0.8f,0.8f};        //Vetor para armazenar informação sobre a cor corrente
 GLfloat  corSelecionadaRGBAnterior[3] = {0.8f,0.8f,0.8f};        //Vetor para armazenar informação sobre a cor anterior
 
 //Translação do texto
@@ -205,7 +205,7 @@ void desenha() {
            //glTranslatef(-0.2f, 0.4f, 0.0f);
            glTranslatef( tx, 0.7f, 0.0f);   
            glScalef(0.001f, 0.001f, 0.0);
-           DesenhaTexto("LET'S GO", 1.0f,1.0f,1.0f);
+           DesenhaTexto("GO", 1.0f,1.0f,1.0f);
         glPopMatrix();
         
         tx+=0.0001f;
@@ -329,7 +329,7 @@ void desenha() {
         
         tx+=0.0001f;
         
-        if(tx >= 0.10f){
+        if(tx >= 0.20f){
             tx = -0.6f;
         }    
     }
@@ -496,13 +496,13 @@ void reset (){
 	exibirSequenciaMemorizavel = 0;
 	gameover = 0;
 		
-	corSelecionadaRGBAnterior[0] = 1;
-	corSelecionadaRGBAnterior[1] = 0 ;
-	corSelecionadaRGBAnterior[2] = 0;
+	corSelecionadaRGBAnterior[0] = 0.8f;
+	corSelecionadaRGBAnterior[1] = 0.8f ;
+	corSelecionadaRGBAnterior[2] = 0.8f;
 
-	corSelecionadaRGB[0]=1.0f;
-	corSelecionadaRGB[1]=0.0f;
-	corSelecionadaRGB[2]=0.0f;
+	corSelecionadaRGB[0]=0.8f;
+	corSelecionadaRGB[1]=0.8f;
+	corSelecionadaRGB[2]=0.8f;
 	
 	exibirMenssagemJogar = 0;
 					
