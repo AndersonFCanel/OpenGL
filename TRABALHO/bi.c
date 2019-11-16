@@ -188,9 +188,9 @@ void desenha() {
    glMatrixMode(GL_MODELVIEW);     // To operate on Model-View matrix
    glLoadIdentity();               // Reset the model-view matrix
     
-    if(contIteracaoNaRodadaCorrente > 0 || vez == 0  ){
+    if((contIteracaoNaRodadaCorrente > 0 || vez == 0) && aguardandoJogadas == 0 ){
 	
-	//mensagem de Here go
+	//mensagem de Here we go
     if(vez == 0 ){
         glPushMatrix();
           glBegin(GL_QUADS);
@@ -287,12 +287,31 @@ void desenha() {
            DesenhaTexto("GAMEOVER", 1.0f,1.0f,1.0f);
         glPopMatrix();
     }      
+    }else{
+    	//mensagem de Here go
+    if(vez == 0 ){
+        glPushMatrix();
+          glBegin(GL_QUADS);
+              glColor3f ( 0.0f,  0.0f,  0.0f);
+                glVertex2f(-0.9f, 0.6f);
+                glVertex2f( 0.9f,  0.6f);
+                glVertex2f( 0.9f, 0.9f);
+                glVertex2f(-0.9f,  0.9f);
+          glEnd();
+        glPopMatrix();
+        
+        glPushMatrix();
+           glTranslatef(-0.4f, 0.7f, 0.0f);
+           glScalef(0.001f, 0.001f, 0.0);
+           DesenhaTexto("!!!!!!!!!!!", 1.0f,1.0f,1.0f);
+        glPopMatrix();
     }
+	}
   
    glutSwapBuffers();   // Double buffered - swap the front and back buffers
    
  }
- 
+ 	
 //funcao que escreve texto na tela
 void DesenhaTexto(char *string, float r, float g, float b)
 {  
@@ -346,28 +365,31 @@ void Anima(int value)
    
     if((contIteracaoNaRodadaCorrente <= vez && contPassoDesenho >= 0.5f || exibirSequenciaMemorizavel >=1 ) && gameover == 0 ){
        // glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
-			printf("\naguardandoJogadas: %d",aguardandoJogadas);
+		printf("\naguardandoJogadas: %d",aguardandoJogadas);
+	    printf("\ncontJogadasCorrente: %d",contJogadaCorrente);
+		printf("\nVez: %d",vez);
+		printf("\n");
+		
+		if(aguardandoJogadas==0){
 			
-			if(aguardandoJogadas==0){
-				
-				imprimeQuebraCabeca(arrayDeGuardaSequenciaDeCores[contIteracaoNaRodadaCorrente]);
-		        printf("\nContagem LOOP corrente: %d",contIteracaoNaRodadaCorrente);
-		        printf(" - Codigo da cor a ser exibida: %d",arrayDeGuardaSequenciaDeCores[contIteracaoNaRodadaCorrente]);
-		        printf(" - VEZ: %d",vez);   
-		        
-		        if( contIteracaoNaRodadaCorrente == vez ){
-		            exibirSequenciaMemorizavel = 0;
-		            exibirMenssagemJogar = 1;
-		        }
-		        
-		        x    = 0.5f;
-		        y    = 0.5f;
-		        
-		        //printf(" \n- Codigo da cor informada pelo usuario: %d",arrayDeJogadas[contIteracaoNaRodadaCorrente]);
-		        
-				contIteracaoNaRodadaCorrente++;
-				
-			}
+			imprimeQuebraCabeca(arrayDeGuardaSequenciaDeCores[contIteracaoNaRodadaCorrente]);
+	        printf("\ncontIteracaoNaRodadaCorrente: %d",contIteracaoNaRodadaCorrente);
+	        printf(" - arrayDeGuardaSequenciaDeCores: COD_COR %d",arrayDeGuardaSequenciaDeCores[contIteracaoNaRodadaCorrente] );
+	        printf(" - VEZ: %d",vez);   
+	        
+	        if( contIteracaoNaRodadaCorrente == vez ){
+	            exibirSequenciaMemorizavel = 0;
+	            exibirMenssagemJogar = 1;
+	        }
+	        
+	        x    = 0.5f;
+	        y    = 0.5f;
+	        
+	        //printf(" \n- Codigo da cor informada pelo usuario: %d",arrayDeJogadas[contIteracaoNaRodadaCorrente]);
+	        
+			contIteracaoNaRodadaCorrente++;
+			
+		}
     }
 
 //  printf("TESTE");
@@ -449,7 +471,7 @@ void reset (){
 	contIteracaoNaRodadaCorrente   = 0;                     //Variável responsável pela contagem do loop corrente até que se inicie uma nova rodada
     contJogadaCorrente             = 0;
 	aguardandoJogadas = 0;
-
+//	aguardandoJogadas = 1;
 	
 }
  
@@ -547,14 +569,6 @@ void jogar( int idCorInfo, char cor){
     int i = 0;
    
 	Set(&arrayDeJogadas [contJogadaCorrente], idCorInfo);
-	contJogadaCorrente +=1;
-	/*if(contJogadaCorrente == vez){
-		
-		aguardandoJogadas=0;
-	}else{
-		aguardandoJogadas = 1;
-	}*/
-
 }
 
 int checarCoincidenciaDosArrays(){
@@ -564,14 +578,12 @@ int checarCoincidenciaDosArrays(){
     printf("\nvez: %d",vez);
 
 	if(contJogadaCorrente >= vez){
-		aguardandoJogadas=0;
+		aguardandoJogadas = 0;
 		contJogadaCorrente =0;
 		vez++;
-	}else{
-		aguardandoJogadas = 1;
 	}
 	
- if(aguardandoJogadas == 1){
+ 	if(aguardandoJogadas == 1){
  
     do{
     	printf("\nI: %d",i);
@@ -594,7 +606,10 @@ int checarCoincidenciaDosArrays(){
 			i++;	
 //	}while( i<vez );	
 	}while( i<contJogadaCorrente );
-}
+
+	//contJogadaCorrente +=1;
+	
+	}
 
     return 1;
 }
