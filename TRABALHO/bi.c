@@ -187,6 +187,34 @@ void desenha() {
    glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
    glMatrixMode(GL_MODELVIEW);     // To operate on Model-View matrix
    glLoadIdentity();               // Reset the model-view matrix
+   
+    //mensagem para jogador entrar com os dados
+    //if( exibirMenssagemJogar == 1 || vez > 0 && aguardandoJogadas == 1 ){
+    if(  vez > 0 && aguardandoJogadas == 1 ){
+        glPushMatrix();
+          glBegin(GL_QUADS);
+              glColor3f ( 0.0f,  0.0f,  0.0f);
+                glVertex2f(-0.6f, 0.6f);
+                glVertex2f( 0.6f,  0.6f);
+                glVertex2f( 0.6f, 0.9f);
+                glVertex2f(-0.6f,  0.9f);
+          glEnd();
+        glPopMatrix();
+        
+        glPushMatrix();
+           //glTranslatef(-0.2f, 0.4f, 0.0f);
+           glTranslatef( tx, 0.7f, 0.0f);   
+           glScalef(0.001f, 0.001f, 0.0);
+           DesenhaTexto("LET'S GO", 1.0f,1.0f,1.0f);
+        glPopMatrix();
+        
+        tx+=0.0001f;
+        
+        if(tx >= 0.10f){
+            tx = -0.6f;
+        }    
+    }
+   
     
     if((contIteracaoNaRodadaCorrente > 0 || vez == 0) && aguardandoJogadas == 0 ){
 	
@@ -240,35 +268,6 @@ void desenha() {
    glEnd();
    glPopMatrix();                      // Restore the model-view matrix
    
-    //mensagem para jogador entrar com os dados
-    if(exibirMenssagemJogar == 1 && vez > 0){
-    
-        
-        glPushMatrix();
-          glBegin(GL_QUADS);
-              glColor3f ( 0.0f,  0.0f,  0.0f);
-                glVertex2f(-0.6f, 0.6f);
-                glVertex2f( 0.6f,  0.6f);
-                glVertex2f( 0.6f, 0.9f);
-                glVertex2f(-0.6f,  0.9f);
-          glEnd();
-        glPopMatrix();
-        
-        glPushMatrix();
-           //glTranslatef(-0.2f, 0.4f, 0.0f);
-           glTranslatef( tx, 0.7f, 0.0f);   
-           glScalef(0.001f, 0.001f, 0.0);
-           DesenhaTexto("ENJOY", 1.0f,1.0f,1.0f);
-        glPopMatrix();
-        
-        tx+=0.0001f;
-        
-        if(tx >= 0.22f){
-            tx = -0.6f;
-        }
-        
-    }
-   
     //mensagem de gamer over
     if(gameover == 1){
         glPushMatrix();
@@ -287,9 +286,9 @@ void desenha() {
            DesenhaTexto("GAMEOVER", 1.0f,1.0f,1.0f);
         glPopMatrix();
     }      
-    }else{
+    } /*else{
     	//mensagem de Here go
-    if(vez == 0 ){
+   if(vez == 0 ){
         glPushMatrix();
           glBegin(GL_QUADS);
               glColor3f ( 0.0f,  0.0f,  0.0f);
@@ -303,10 +302,38 @@ void desenha() {
         glPushMatrix();
            glTranslatef(-0.4f, 0.7f, 0.0f);
            glScalef(0.001f, 0.001f, 0.0);
-           DesenhaTexto("!!!!!!!!!!!", 1.0f,1.0f,1.0f);
+           DesenhaTexto("WELCOME", 1.0f,1.0f,1.0f);
         glPopMatrix();
     }
-	}
+	}*/
+	
+	//mensagem para jogador entrar com os dados
+    //if( exibirMenssagemJogar == 1 || vez > 0 && aguardandoJogadas == 1 ){
+    if(  vez > 0 && exibirMenssagemJogar == 1 ){
+        glPushMatrix();
+          glBegin(GL_QUADS);
+              glColor3f ( 0.0f,  0.0f,  0.0f);
+                glVertex2f(-0.6f, 0.6f);
+                glVertex2f( 0.6f,  0.6f);
+                glVertex2f( 0.6f, 0.9f);
+                glVertex2f(-0.6f,  0.9f);
+          glEnd();
+        glPopMatrix();
+        
+        glPushMatrix();
+           //glTranslatef(-0.2f, 0.4f, 0.0f);
+           glTranslatef( tx, 0.7f, 0.0f);   
+           glScalef(0.001f, 0.001f, 0.0);
+           DesenhaTexto("LET'S GO", 1.0f,1.0f,1.0f);
+        glPopMatrix();
+        
+        tx+=0.0001f;
+        
+        if(tx >= 0.10f){
+            tx = -0.6f;
+        }    
+    }
+   
   
    glutSwapBuffers();   // Double buffered - swap the front and back buffers
    
@@ -364,12 +391,23 @@ void Anima(int value)
 
    
     if((contIteracaoNaRodadaCorrente <= vez && contPassoDesenho >= 0.5f || exibirSequenciaMemorizavel >=1 ) && gameover == 0 ){
-       // glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
+    
+	
 		printf("\naguardandoJogadas: %d",aguardandoJogadas);
 	    printf("\ncontJogadasCorrente: %d",contJogadaCorrente);
 		printf("\nVez: %d",vez);
 		printf("\n");
-		
+		int c = 0;
+		printf("\nSequencia informada pela maquina:  ");
+        for(c=0; c<= vez; c++){
+           Imprime(arrayDeGuardaSequenciaDeCores[c]); 
+        }   
+        printf("\nSequencia informada por voce:  ");
+        for(c=0; c<= vez; c++){
+           Imprime(arrayDeJogadas[c]);  
+        } 
+        printf("\n");
+
 		if(aguardandoJogadas==0){
 			
 			imprimeQuebraCabeca(arrayDeGuardaSequenciaDeCores[contIteracaoNaRodadaCorrente]);
@@ -390,6 +428,12 @@ void Anima(int value)
 			contIteracaoNaRodadaCorrente++;
 			
 		}
+		
+			if(contJogadaCorrente > vez){
+				aguardandoJogadas = 0;
+				contJogadaCorrente =0;
+				vez++;
+			}
     }
 
 //  printf("TESTE");
@@ -565,22 +609,18 @@ int checarCoincidenciaDosArrays(){
     int i=0;
     int c=0;
 
-    printf("\ncontJogadasCorrente: %d",contJogadaCorrente);
+    printf("\n\ncontJogadasCorrente: %d",contJogadaCorrente);
     printf("\nvez: %d",vez);
-
-	if(contJogadaCorrente >= vez){
-		aguardandoJogadas = 0;
-		contJogadaCorrente =0;
-		vez++;
-	}
+    printf("\n");
 	
  	if(aguardandoJogadas == 1){
- 
+ 	 printf("\n");
+    
+    int aux = 0;
     do{
     	printf("\nI: %d",i);
 	        if(arrayDeJogadas[i] == arrayDeGuardaSequenciaDeCores[i]) {
 	             gameover = 0;
-	             contJogadaCorrente +=1;
 	             printf("\n\nVoce ACERTOU a sequencia ate aqui!");
 	                printf("\nSequencia informada pela maquina:  ");
 	                for(c=0; c<= vez; c++){
@@ -591,7 +631,8 @@ int checarCoincidenciaDosArrays(){
 	                   Imprime(arrayDeJogadas[c]);  
 	                } 
 	                printf("\n");
-	        }else{
+	               
+	        }else if(i==contJogadaCorrente ){
 	                printf("\n\nVoce ERROU a sequencia ");
 	                printf("\nSequencia informada pela maquina:  ");
 	                for(i=0; i<= vez; i+=1){
@@ -602,14 +643,16 @@ int checarCoincidenciaDosArrays(){
 	                   Imprime(arrayDeJogadas[i]);  
 	                } 
 	                 printf("\n");
-	                gameover = 1;
-	                return 0;
+	              //  gameover = 1;
+	                //return 0;
 	           }       
 			i++;	
 //	}while( i<vez );	
-	}while( i<contJogadaCorrente );
+	}while( i<=contJogadaCorrente );
 	
 	}
+    
+	contJogadaCorrente +=1;
 
     return 1;
 }
