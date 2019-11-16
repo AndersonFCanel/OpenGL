@@ -502,44 +502,34 @@ void Teclado (unsigned char key, int x, int y)
 			case 27:    exit(0);    // ESC ?
 						break;
 			case 'R':   //VERMELHO    
-				//montaSequenciaMemorizavel();         // Cria jogada randomica
-			executaRotinaGame(0); 
+				executaRotinaGame(0); 
 				break;
 			case 'r':   //VERMELHO    
-				//montaSequenciaMemorizavel();
 				executaRotinaGame(0); 
 				break;  
 			case 'G' :  //VERDE
-				//montaSequenciaMemorizavel();
 				executaRotinaGame(1); 
 				break;
 			case 'g':  //VERDE
-				//montaSequenciaMemorizavel();
-			executaRotinaGame(1); 
+				executaRotinaGame(1); 
 				break;
 			case 'B':   //AZUL
-				//montaSequenciaMemorizavel();
-			executaRotinaGame(2);
+				executaRotinaGame(2);
 				break;
 			case  'b':   //AZUL
-				//montaSequenciaMemorizavel();
 				executaRotinaGame(2);
 				break;  
 			case 'Y':   //AMARELO
-				//montaSequenciaMemorizavel();
 				executaRotinaGame(3);
 				break;
 			case 'y':   //AMARELO
-				//montaSequenciaMemorizavel();
 				executaRotinaGame(3);
 				break;  
 			case 'W' :  //BRANCO
-				//montaSequenciaMemorizavel();
 				executaRotinaGame(4);
 				break;
 			case 'w' :  //BRANCO
 				executaRotinaGame(4);
-				//montaSequenciaMemorizavel()
 				break;
 			case 'S' :  //INFORMAR JOGADAS //===>>> essa opção saíara
 				idCor = 9;
@@ -573,6 +563,7 @@ void jogar( int idCorInfo, char cor){
 
 int checarCoincidenciaDosArrays(){
     int i=0;
+    int c=0;
 
     printf("\ncontJogadasCorrente: %d",contJogadaCorrente);
     printf("\nvez: %d",vez);
@@ -589,9 +580,19 @@ int checarCoincidenciaDosArrays(){
     	printf("\nI: %d",i);
 	        if(arrayDeJogadas[i] == arrayDeGuardaSequenciaDeCores[i]) {
 	             gameover = 0;
-	             printf("\nVoce acertou a sequencia ate aqui!");
+	             contJogadaCorrente +=1;
+	             printf("\n\nVoce ACERTOU a sequencia ate aqui!");
+	                printf("\nSequencia informada pela maquina:  ");
+	                for(c=0; c<= vez; c++){
+	                   Imprime(arrayDeGuardaSequenciaDeCores[c]); 
+	                }   
+	                printf("\nSequencia informada por voce:  ");
+	                for(c=0; c<= vez; c++){
+	                   Imprime(arrayDeJogadas[c]);  
+	                } 
+	                printf("\n");
 	        }else{
-	                printf("\nVoce errou a sequencia ");
+	                printf("\n\nVoce ERROU a sequencia ");
 	                printf("\nSequencia informada pela maquina:  ");
 	                for(i=0; i<= vez; i+=1){
 	                   Imprime(arrayDeGuardaSequenciaDeCores[i]); 
@@ -600,14 +601,13 @@ int checarCoincidenciaDosArrays(){
 	                for(i=0; i<= vez; i++){
 	                   Imprime(arrayDeJogadas[i]);  
 	                } 
+	                 printf("\n");
 	                gameover = 1;
 	                return 0;
 	           }       
 			i++;	
 //	}while( i<vez );	
 	}while( i<contJogadaCorrente );
-
-	//contJogadaCorrente +=1;
 	
 	}
 
