@@ -188,9 +188,54 @@ void desenha() {
    glMatrixMode(GL_MODELVIEW);     // To operate on Model-View matrix
    glLoadIdentity();               // Reset the model-view matrix
    
+char str[12];
+
+    glPushMatrix();
+          glBegin(GL_QUADS);
+              glColor3f ( 0.0f,  0.0f,  0.0f);
+                //glTranslatef(0.9f, 0.9f, 0.0f);
+                glVertex2f( 0.6f, -0.6f);
+                glVertex2f( 0.9f, -0.6f);
+                glVertex2f( 0.9f,  -0.9f);
+                glVertex2f( 0.6f,  -0.9f);
+          glEnd();
+        glPopMatrix();
+        
+        glPushMatrix();
+           glTranslatef( 0.7f, -0.8f, 0.0f);
+           glScalef(0.001f, 0.001f, 0.0);
+           DesenhaTexto("00", 1.0f,1.0f,1.0f);
+        glPopMatrix();
+        
+   
+    //mensagem de gamer over
+    if(gameover == 1){
+        glPushMatrix();
+          glBegin(GL_QUADS);
+              glColor3f ( 0.0f,  0.0f,  0.0f);
+                glVertex2f(-0.8f, -0.6f);
+                glVertex2f( 0.8f, -0.6f);
+                glVertex2f( 0.8f,  0.6f);
+                glVertex2f(-0.8f,  0.6f);
+          glEnd();
+        glPopMatrix();
+        
+        glPushMatrix();
+           glTranslatef(-0.3f, 0.0f, 0.0f);
+           glScalef(0.001f, 0.001f, 0.0);
+           DesenhaTexto("GAMEOVER", 1.0f,1.0f,1.0f);
+        glPopMatrix();
+        
+        glPushMatrix();
+           glTranslatef(-0.6f, -0.2f, 0.0f);
+           glScalef(0.001f, 0.001f, 0.0);
+           DesenhaTexto("Press 'N' to restart!", 1.0f,1.0f,1.0f);
+        glPopMatrix();
+    }  
+   
     //mensagem para jogador entrar com os dados
     //if( exibirMenssagemJogar == 1 || vez > 0 && aguardandoJogadas == 1 ){
-    if(  vez > 0 && aguardandoJogadas == 1 ){
+    if(  vez > 0 && aguardandoJogadas == 1 && gameover !=1 ){
         glPushMatrix();
           glBegin(GL_QUADS);
               glColor3f ( 0.0f,  0.0f,  0.0f);
@@ -205,7 +250,7 @@ void desenha() {
            //glTranslatef(-0.2f, 0.4f, 0.0f);
            glTranslatef( tx, 0.7f, 0.0f);   
            glScalef(0.001f, 0.001f, 0.0);
-           DesenhaTexto("GO", 1.0f,1.0f,1.0f);
+           DesenhaTexto("Ready Go!", 1.0f,1.0f,1.0f);
         glPopMatrix();
         
         tx+=0.0001f;
@@ -231,9 +276,9 @@ void desenha() {
         glPopMatrix();
         
         glPushMatrix();
-           glTranslatef(-0.4f, 0.7f, 0.0f);
+           glTranslatef(-0.3f, 0.7f, 0.0f);
            glScalef(0.001f, 0.001f, 0.0);
-           DesenhaTexto("HERE WE GO", 1.0f,1.0f,1.0f);
+           DesenhaTexto("LETS GO", 1.0f,1.0f,1.0f);
         glPopMatrix();
     }
     
@@ -267,49 +312,12 @@ void desenha() {
       glVertex2f(-x,  y);
    glEnd();
    glPopMatrix();                      // Restore the model-view matrix
-   
-    //mensagem de gamer over
-    if(gameover == 1){
-        glPushMatrix();
-          glBegin(GL_QUADS);
-              glColor3f ( 0.0f,  0.0f,  0.0f);
-                glVertex2f(-0.6f, -0.6f);
-                glVertex2f( 0.6f, -0.6f);
-                glVertex2f( 0.6f,  0.6f);
-                glVertex2f(-0.6f,  0.6f);
-          glEnd();
-        glPopMatrix();
-        
-        glPushMatrix();
-           glTranslatef(-0.3f, 0.0f, 0.0f);
-           glScalef(0.001f, 0.001f, 0.0);
-           DesenhaTexto("GAMEOVER", 1.0f,1.0f,1.0f);
-        glPopMatrix();
-    }      
-    } /*else{
-    	//mensagem de Here go
-   if(vez == 0 ){
-        glPushMatrix();
-          glBegin(GL_QUADS);
-              glColor3f ( 0.0f,  0.0f,  0.0f);
-                glVertex2f(-0.9f, 0.6f);
-                glVertex2f( 0.9f,  0.6f);
-                glVertex2f( 0.9f, 0.9f);
-                glVertex2f(-0.9f,  0.9f);
-          glEnd();
-        glPopMatrix();
-        
-        glPushMatrix();
-           glTranslatef(-0.4f, 0.7f, 0.0f);
-           glScalef(0.001f, 0.001f, 0.0);
-           DesenhaTexto("WELCOME", 1.0f,1.0f,1.0f);
-        glPopMatrix();
-    }
-	}*/
+     
+   } 
 	
 	//mensagem para jogador entrar com os dados
     //if( exibirMenssagemJogar == 1 || vez > 0 && aguardandoJogadas == 1 ){
-    if(  vez > 0 && exibirMenssagemJogar == 1 ){
+    if(  vez > 0 && exibirMenssagemJogar == 1 && gameover != 1 ){
         glPushMatrix();
           glBegin(GL_QUADS);
               glColor3f ( 0.0f,  0.0f,  0.0f);
@@ -324,7 +332,7 @@ void desenha() {
            //glTranslatef(-0.2f, 0.4f, 0.0f);
            glTranslatef( tx, 0.7f, 0.0f);   
            glScalef(0.001f, 0.001f, 0.0);
-           DesenhaTexto("LET'S GO", 1.0f,1.0f,1.0f);
+           DesenhaTexto("Ready Go!", 1.0f,1.0f,1.0f);
         glPopMatrix();
         
         tx+=0.0001f;
@@ -454,7 +462,7 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
     // Calcula a correção de aspecto
     fAspect = (GLfloat)w/(GLfloat)h;
 
-    EspecificaParametrosVisualizacao();
+    //EspecificaParametrosVisualizacao();
 }
  
  // Função usada para especificar o volume de visualização
@@ -539,7 +547,7 @@ void Teclado (unsigned char key, int x, int y)
     
 	int i = 0;
     
-//	if( gameover == 0 ){
+    if( gameover == 0 ){
     
 		switch(key)
 		{
@@ -595,6 +603,24 @@ void Teclado (unsigned char key, int x, int y)
 				idCor = 10;
 				break;  
 			}
+		}else{
+					
+			switch(key)
+			{
+			
+			case 27:    exit(0);    // ESC ?
+				break;
+			case 'n' :  //INFORMAR JOGADAS //===>>> essa opção saíara
+				reset ();
+				break;
+			case 'N' :  //NEW GAME
+				reset ();
+				break;      
+			case 'i' :  //INFORMAR JOGADAS //===>>> essa opção saíara
+				idCor = 10;
+	
+		}
+	}
     glutPostRedisplay();
 }
 
@@ -643,7 +669,10 @@ int checarCoincidenciaDosArrays(){
 	                   Imprime(arrayDeJogadas[i]);  
 	                } 
 	                 printf("\n");
-	              //  gameover = 1;
+	                if(i>=contJogadaCorrente){
+						gameover = 1;
+						
+					}
 	                //return 0;
 	           }       
 			i++;	
