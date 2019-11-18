@@ -188,12 +188,11 @@ void desenha() {
    glMatrixMode(GL_MODELVIEW);     // To operate on Model-View matrix
    glLoadIdentity();               // Reset the model-view matrix
    
-char str[12];
+char snum[3];
 
     glPushMatrix();
           glBegin(GL_QUADS);
               glColor3f ( 0.0f,  0.0f,  0.0f);
-                //glTranslatef(0.9f, 0.9f, 0.0f);
                 glVertex2f( 0.6f, -0.6f);
                 glVertex2f( 0.9f, -0.6f);
                 glVertex2f( 0.9f,  -0.9f);
@@ -204,7 +203,7 @@ char str[12];
         glPushMatrix();
            glTranslatef( 0.7f, -0.8f, 0.0f);
            glScalef(0.001f, 0.001f, 0.0);
-           DesenhaTexto("00", 1.0f,1.0f,1.0f);
+           DesenhaTexto(itoa(vez, snum, 10), 1.0f,1.0f,1.0f);
         glPopMatrix();
         
    
@@ -213,10 +212,10 @@ char str[12];
         glPushMatrix();
           glBegin(GL_QUADS);
               glColor3f ( 0.0f,  0.0f,  0.0f);
-                glVertex2f(-0.8f, -0.6f);
-                glVertex2f( 0.8f, -0.6f);
-                glVertex2f( 0.8f,  0.6f);
-                glVertex2f(-0.8f,  0.6f);
+                glVertex2f(-0.8f, -0.4f);
+                glVertex2f( 0.8f, -0.4f);
+                glVertex2f( 0.8f,  0.3f);
+                glVertex2f(-0.8f,  0.3f);
           glEnd();
         glPopMatrix();
         
@@ -255,38 +254,19 @@ char str[12];
         
         tx+=0.0001f;
         
-        if(tx >= 0.10f){
+        if(tx >= 0.5f){
             tx = -0.6f;
         }    
     }
    
     
     if((contIteracaoNaRodadaCorrente > 0 || vez == 0) && aguardandoJogadas == 0 ){
-	
-	//mensagem de Here we go
-    if(vez == 0 ){
-        glPushMatrix();
-          glBegin(GL_QUADS);
-              glColor3f ( 0.0f,  0.0f,  0.0f);
-                glVertex2f(-0.9f, 0.6f);
-                glVertex2f( 0.9f,  0.6f);
-                glVertex2f( 0.9f, 0.9f);
-                glVertex2f(-0.9f,  0.9f);
-          glEnd();
-        glPopMatrix();
-        
-        glPushMatrix();
-           glTranslatef(-0.3f, 0.7f, 0.0f);
-           glScalef(0.001f, 0.001f, 0.0);
-           DesenhaTexto("LETS GO", 1.0f,1.0f,1.0f);
-        glPopMatrix();
-    }
     
     //Redesenhando o objeto anterior
     if(vez > 0 && contIteracaoNaRodadaCorrente >1){
         glPushMatrix();                     // Save model-view matrix setting
             //glTranslatef(-0.0f, 0.0f, 0.0f);    // Translate
-            glRotatef(0.0f, 0.0f, 0.0f, 1.0f); // rotate by angle in degrees
+            glRotatef(-angle, 0.0f, 0.0f, 1.0f); // rotate by angle in degrees
             glBegin(GL_QUADS);                  // Each set of 4 vertices form a quad
             glColor3f( corSelecionadaRGBAnterior[0],
                        corSelecionadaRGBAnterior[1],
@@ -313,6 +293,25 @@ char str[12];
    glEnd();
    glPopMatrix();                      // Restore the model-view matrix
      
+     
+     	//mensagem de Here we go
+    if(vez == 0 ){
+        glPushMatrix();
+          glBegin(GL_QUADS);
+              glColor3f ( 0.0f,  0.0f,  0.0f);
+                glVertex2f(-0.9f, 0.6f);
+                glVertex2f( 0.9f,  0.6f);
+                glVertex2f( 0.9f, 0.9f);
+                glVertex2f(-0.9f,  0.9f);
+          glEnd();
+        glPopMatrix();
+        
+        glPushMatrix();
+           glTranslatef(-0.3f, 0.7f, 0.0f);
+           glScalef(0.001f, 0.001f, 0.0);
+           DesenhaTexto("LETS GO", 1.0f,1.0f,1.0f);
+        glPopMatrix();
+    }
    } 
 	
 	//mensagem para jogador entrar com os dados
@@ -337,7 +336,7 @@ char str[12];
         
         tx+=0.0001f;
         
-        if(tx >= 0.20f){
+        if(tx >= 0.5f){
             tx = -0.6f;
         }    
     }
@@ -393,8 +392,8 @@ void Anima(int value)
     }
    
    
-    if(angle < 380.0f){
-         angle += 45.0f; 
+    if(angle <= 380.0f){
+         angle += 27.0f; 
     }   
 
    
