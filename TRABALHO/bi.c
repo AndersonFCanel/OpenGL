@@ -31,7 +31,7 @@ GLfloat contPassoDesenho  = 0.0f;
 //Identificador das cores
 char     arrayCharCores           [5] = {'R','G','B','Y','W'};   //Identificadores das cores
 int      arrayIntCores            [5] = {0, 1, 2, 3, 4};         //Identificadores numérico das cores
-int      idCor                    ;                          //Variável para receber código proveniente do iedentificador de cores
+int      idCor                    ;                              //Variável para receber código proveniente do iedentificador de cores
 
 //RGB dos objetos
 GLfloat  corSelecionadaRGB        [3] = {0.8f,0.8f,0.8f};        //Vetor para armazenar informação sobre a cor corrente
@@ -41,7 +41,7 @@ GLfloat  corSelecionadaRGBAnterior[3] = {0.8f,0.8f,0.8f};        //Vetor para ar
 GLfloat tx = -0.6f; 
 
 
-int      arrayDeJogadas                [255];                     //Vetor para armazenar Jogadas realizados pelo jogador
+int      arrayDeJogadas                [255];                     //Vetor para armazenar jogadas realizados pelo jogador
 int      arrayDeGuardaSequenciaDeCores [255];                     //Vetor para armazenar sequencia de cores a ser mermorizada pelo jogador
 
 //Controladores
@@ -53,9 +53,9 @@ int      exibirMenssagemJogar           = 0;
 //Contadores
 int      vez                            = 0;                     //Variável para armazenara vez corrente
 int      contIteracaoNaRodadaCorrente   = 0;                     //Variável responsável pela contagem do loop corrente até que se inicie uma nova rodada
-int      contJogadaCorrente             = 0;
-int      contSizeArrayDeJogada          = 0;
-int      contSizeGuardaSequenciaDeCores = 0;
+int      contJogadaCorrente             = 0;                     //Conta jogada corrente
+//int      contSizeArrayDeJogada          = 0;
+//int      contSizeGuardaSequenciaDeCores = 0;
 
 
 /**
@@ -69,7 +69,7 @@ char remontaQuadrado(int color){
     
     switch (color) {
             case 0:
-       
+       	
                     corSelecionadaRGBAnterior[0] = corSelecionadaRGB[0];
                     corSelecionadaRGBAnterior[1] = corSelecionadaRGB[1];
                     corSelecionadaRGBAnterior[2] = corSelecionadaRGB[2];
@@ -150,12 +150,12 @@ char remontaQuadrado(int color){
                 x    = 0.0f;
                 y    = 0.0f;
                 angle = 0.0f;
-                idCor = 9;    //Para evitar loop infinito
+                idCor = 9;  //Para evitar loop infinito
                 
                 break;
             
             default:
-            //  printf("Houve algum problema com o vetor de cores!");
+        	    // printf("Houve algum problema com o vetor de cores!");
                 corSelecinada ='X'; 
                 idCor = 9;    //Para evitar loop infinito
             break;  
@@ -168,27 +168,29 @@ char remontaQuadrado(int color){
  
 /* Inicializa OpenGL Graphics */
 void initGL() {
-   // Set "clearing" or background color
-   glClearColor(0.8f, 0.8f, 0.8f, 0.8f); // White and opaque  
+   // Limpa janela com a cor informada
+   glClearColor(0.8f, 0.8f, 0.8f, 0.8f);   
         
 }
  
-/* Called back quando não há outro evento a ser tratado */
+ 
 void idle() {
-   glutPostRedisplay();   //Poste uma solicitação de nova pintura para ativar display()
+   glutPostRedisplay();   
 }
  
-/* Manipulador para evento de repintar janelas. Callback quando a janela aparecer pela primeira vez e
-   sempre que a janela precisar ser pintada novamente. */
+/* Funçaõ para contrução das janelas. Chamada sempre que a janela for exibida */
 void desenha() {
     
+   //Invoca função configuração do quadrado corrente e com o quadrado anterior. 
    remontaQuadrado(idCor);
     
    glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer
    glMatrixMode(GL_MODELVIEW);     // To operate on Model-View matrix
    glLoadIdentity();               // Reset the model-view matrix
    
-char snum[3];
+    
+    //DESENHA PLACAR
+    char snum[3];
 
     glPushMatrix();
           glBegin(GL_QUADS);
@@ -201,13 +203,13 @@ char snum[3];
         glPopMatrix();
         
         glPushMatrix();
-           glTranslatef( 0.7f, -0.8f, 0.0f);
-           glScalef(0.001f, 0.001f, 0.0);
-           DesenhaTexto(itoa(vez, snum, 10), 1.0f,1.0f,1.0f);
+           glTranslatef( 0.7f, -0.8f, 0.0f); // posicionamento
+           glScalef(0.001f, 0.001f, 0.0);    // tamanho
+           DesenhaTexto(itoa(vez, snum, 10), 1.0f,1.0f,1.0f); 
         glPopMatrix();
-        
+     //FIM DESENHA PLACAR   
    
-    //mensagem de gamer over
+    //DESENHA MENSAGEM DE GAME OVER
     if(gameover == 1){
         glPushMatrix();
           glBegin(GL_QUADS);
@@ -224,15 +226,17 @@ char snum[3];
            glScalef(0.001f, 0.001f, 0.0);
            DesenhaTexto("GAMEOVER", 1.0f,1.0f,1.0f);
         glPopMatrix();
+     
         
         glPushMatrix();
            glTranslatef(-0.6f, -0.2f, 0.0f);
            glScalef(0.001f, 0.001f, 0.0);
            DesenhaTexto("Press 'N' to restart!", 1.0f,1.0f,1.0f);
         glPopMatrix();
-    }  
+    }
+	 //FIM DESENHA MENSAGEM DE GAME OVER  
    
-    //mensagem para jogador entrar com os dados
+    //Mensagem para jogador entrar com os dados
     //if( exibirMenssagemJogar == 1 || vez > 0 && aguardandoJogadas == 1 ){
     if(  vez > 0 && aguardandoJogadas == 1 && gameover !=1 ){
         glPushMatrix();
@@ -251,32 +255,33 @@ char snum[3];
            glScalef(0.001f, 0.001f, 0.0);
            DesenhaTexto("Ready Go!", 1.0f,1.0f,1.0f);
         glPopMatrix();
-        
+       
         tx+=0.0001f;
         
-        if(tx >= 0.5f){
+        if(tx >= 0.05f){
             tx = -0.6f;
         }    
-    }
-   
-    
+    } 
+	//FIM Mensagem para jogador entrar com os dados
+	
+        
     if((contIteracaoNaRodadaCorrente > 0 || vez == 0) && aguardandoJogadas == 0 ){
     
-    //Redesenhando o objeto anterior
-    if(vez > 0 && contIteracaoNaRodadaCorrente >1){
-        glPushMatrix();                     // Save model-view matrix setting
-            //glTranslatef(-0.0f, 0.0f, 0.0f);    // Translate
-            glRotatef(-angle, 0.0f, 0.0f, 1.0f); // rotate by angle in degrees
-            glBegin(GL_QUADS);                  // Each set of 4 vertices form a quad
-            glColor3f( corSelecionadaRGBAnterior[0],
-                       corSelecionadaRGBAnterior[1],
-                       corSelecionadaRGBAnterior[2]);     
-            glVertex2f(-0.5f, -0.5f);
-            glVertex2f( 0.5f, -0.5f);
-            glVertex2f( 0.5f,  0.5f);
-            glVertex2f(-0.5f,  0.5f);
-            glEnd();
-        glPopMatrix();                      // Restore the model-view matrix    
+	    //Redesenhando o objeto anterior
+	    if(vez > 0 && contIteracaoNaRodadaCorrente >1){
+	        glPushMatrix();                     // Save model-view matrix setting
+	            //glTranslatef(-0.0f, 0.0f, 0.0f);    // Translate
+	            glRotatef(-angle, 0.0f, 0.0f, 1.0f); // rotate by angle in degrees
+	            glBegin(GL_QUADS);                  // Each set of 4 vertices form a quad
+	            glColor3f( corSelecionadaRGBAnterior[0],
+	                       corSelecionadaRGBAnterior[1],
+	                       corSelecionadaRGBAnterior[2]);     
+	            glVertex2f(-0.5f, -0.5f);
+	            glVertex2f( 0.5f, -0.5f);
+	            glVertex2f( 0.5f,  0.5f);
+	            glVertex2f(-0.5f,  0.5f);
+	            glEnd();
+	        glPopMatrix();                      // Restore the model-view matrix    
     }
 
    glPushMatrix();                     // Save model-view matrix setting
@@ -294,7 +299,7 @@ char snum[3];
    glPopMatrix();                      // Restore the model-view matrix
      
      
-     	//mensagem de Here we go
+   //mensagem Lets GO
     if(vez == 0 ){
         glPushMatrix();
           glBegin(GL_QUADS);
@@ -311,7 +316,8 @@ char snum[3];
            glScalef(0.001f, 0.001f, 0.0);
            DesenhaTexto("LETS GO", 1.0f,1.0f,1.0f);
         glPopMatrix();
-    }
+	}
+   //FIM mensagem Lets GO
    } 
 	
 	//mensagem para jogador entrar com os dados
@@ -336,7 +342,7 @@ char snum[3];
         
         tx+=0.0001f;
         
-        if(tx >= 0.5f){
+        if(tx >= -0.05f){
             tx = -0.6f;
         }    
     }
@@ -359,8 +365,7 @@ void DesenhaTexto(char *string, float r, float g, float b)
  
  
  
-/* Manipulador para evento de redimensionamento de janela. Chamado de volta quando a janela aparece pela primeira vez e
-   sempre que a janela for redimensionada com sua nova largura e altura */
+/*Função para evento de redimensionamento de janela. */
 void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integer
    // Compute aspect ratio of the new window
    if (height == 0) height = 1;                // To prevent divide by 0
@@ -384,22 +389,21 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
 // Função callback chamada pela GLUT a cada intervalo de tempo
 void Anima(int value)
 {
-    
+    //'Crescendo' o qudrado no eixo x e no eixo y
     if( contPassoDesenho < 0.5f){
       contPassoDesenho += 0.05f;
       x    += 0.05f;
       y    += 0.05;
     }
    
-   
+    //rotacioinando o quadrado
     if(angle <= 380.0f){
          angle += 27.0f; 
     }   
 
    
     if((contIteracaoNaRodadaCorrente <= vez && contPassoDesenho >= 0.5f || exibirSequenciaMemorizavel >=1 ) && gameover == 0 ){
-    
-	
+
 		printf("\naguardandoJogadas: %d",aguardandoJogadas);
 	    printf("\ncontJogadasCorrente: %d",contJogadaCorrente);
 		printf("\nVez: %d",vez);
@@ -442,8 +446,6 @@ void Anima(int value)
 				vez++;
 			}
     }
-
-//  printf("TESTE");
 
     // Redesenha o objeto em outra posição
     glutPostRedisplay();
@@ -582,25 +584,30 @@ void Teclado (unsigned char key, int x, int y)
 			case 'w' :  //BRANCO
 				executaRotinaGame(4);
 				break;
-			case 'S' :  //INFORMAR JOGADAS //===>>> essa opção saíara
+			case 'S' :  //INFORMAR JOGADAS //===>>> essa opção NAO SERA USADA
 				idCor = 9;
 				exibirSequenciaMemorizavel = 1;
 				gameover = 0;
 				exibirMenssagemJogar = 0;
 				break;
-			case 's' :  //INFORMAR JOGADAS //===>>> essa opção saíara
+			case 's' :  //INFORMAR JOGADAS //===>>> essa NAO SERA USADA
 				idCor = 9;
 				exibirSequenciaMemorizavel = 1;
 				gameover = 0;
 				break;
+			case 'n' :  //NEW GAME
+			
+				reset ();
+		     	break;
+		
 			case 'N' :  //NEW GAME
 			
-			reset ();
+				reset ();
 				
 				break;      
-			case 'i' :  //INFORMAR JOGADAS //===>>> essa opção saíara
-				idCor = 10;
-				break;  
+		//	case 'i' :  //INFORMAR JOGADAS //===>>> essa NAO SERA USADA
+		//		idCor = 10;
+		//		break;  
 			}
 		}else{
 					
@@ -609,14 +616,14 @@ void Teclado (unsigned char key, int x, int y)
 			
 			case 27:    exit(0);    // ESC ?
 				break;
-			case 'n' :  //INFORMAR JOGADAS //===>>> essa opção saíara
+			case 'n' :  //NEW GAME
 				reset ();
 				break;
 			case 'N' :  //NEW GAME
 				reset ();
 				break;      
-			case 'i' :  //INFORMAR JOGADAS //===>>> essa opção saíara
-				idCor = 10;
+		//	case 'i' :  //INFORMAR JOGADAS //===>>>NAO SERA USADA
+		//		idCor = 10;
 	
 		}
 	}
@@ -630,6 +637,8 @@ void jogar( int idCorInfo, char cor){
 	Set(&arrayDeJogadas [contJogadaCorrente], idCorInfo);
 }
 
+
+//VERIFICA COINCIDENCIA ENTRE O ARRAY RANDOMICO E O ARRAY INFORMADO PELO O USUARIO
 int checarCoincidenciaDosArrays(){
     int i=0;
     int c=0;
@@ -686,17 +695,21 @@ int checarCoincidenciaDosArrays(){
 }
 
 
+
+//SETA UM VALOR NO ARRAY
 void Set (int *N, int i) // função com um parâmetro por referência
 {
 	printf("\nEntrou com: %d", i);
   *N = i;
 }
 
+//IMPRIME 
  void Imprime (int N) // função com um parâmetro por valor
 {
     printf("%d", N);
 }
  
+//IMPRIME A SEQUENCIA RAMDOMICA 
 void imprimeQuebraCabeca(int codColor){
         switch(codColor)
     {
