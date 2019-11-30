@@ -9,14 +9,14 @@
 * INTRUÇÕES E TECLAS PARA O JOGO: 
 * Guardar sequências de cores e depois repeti-las através das teclas correspondentes:
 
-* R / r -  Vermelho
-* G / g -  Verde
-* B / b -  Azul
-* Y / y -  Amarelo
-* W / w -  Branco
+* R / r -  Vermelho / Red     - cor código 0
+* G / g -  Verde / Green      - cor código 1
+* B / b -  Azul  / Blue       - cor código 2
+* Y / y -  Amarelo / Yellow	  - cor código 3
+* W / w -  Branco  /White     - cor código 4
 *
-* Quando digitar a sequência anterior completa, pressionar S para próxima etapa. 
-* Para Iniciar próxima rodada pressionar S / s.
+* Após digitar a sequência anterior completa, 
+* pressionar S para acelerar para próxima etapa, se quiser!. 
 */
 
 
@@ -54,12 +54,13 @@ int      exibirMenssagemJogar           = 0;
 int      vez                            = 0;                     //Variável para armazenara vez corrente
 int      contIteracaoNaRodadaCorrente   = 0;                     //Variável responsável pela contagem do loop corrente até que se inicie uma nova rodada
 int      contJogadaCorrente             = 0;                     //Conta jogada corrente
+int      exibirAcelerado                = 1;
 //int      contSizeArrayDeJogada          = 0;
 //int      contSizeGuardaSequenciaDeCores = 0;
 
 
 /**
-* Função para montagem do quadrado conforme código de cor informado
+* Função para montagem do quadrado conforme código de cor informado no parâmetro
 * Esta função zera o valor das variáveis para que seja criado um novo quadrado.
 */
 char remontaQuadrado(int color){
@@ -538,6 +539,9 @@ void executaRotinaGame(int n) {
 		jogar(n);                    //ALimenta arrayDeJogadas
 	
 		checarCoincidenciaDosArrays();
+	
+		exibirAcelerado = 1;
+		
 	    //vez++;
 		//montaSequenciaMemorizavel();
 	}
@@ -584,16 +588,24 @@ void Teclado (unsigned char key, int x, int y)
 			case 'w' :  //BRANCO
 				executaRotinaGame(4);
 				break;
-			case 'S' :  //INFORMAR JOGADAS //===>>> essa opção NAO SERA USADA
-				idCor = 9;
-				exibirSequenciaMemorizavel = 1;
-				gameover = 0;
-				exibirMenssagemJogar = 0;
+			case 'S' :  
+				if(exibirAcelerado == 1){
+					idCor = 9;
+					exibirSequenciaMemorizavel = 1;
+					gameover = 0;
+					exibirMenssagemJogar = 0;
+				    exibirAcelerado = 0;
+				}
 				break;
-			case 's' :  //INFORMAR JOGADAS //===>>> essa NAO SERA USADA
-				idCor = 9;
-				exibirSequenciaMemorizavel = 1;
-				gameover = 0;
+			case 's' :  
+				if(exibirAcelerado == 1){
+				   idCor = 9;
+			    	exibirSequenciaMemorizavel = 1;
+				    gameover = 0;
+					exibirMenssagemJogar = 0;
+				    exibirAcelerado = 0;
+				}
+				
 				break;
 			case 'n' :  //NEW GAME
 			
