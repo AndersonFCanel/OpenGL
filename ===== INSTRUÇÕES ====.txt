@@ -1,10 +1,17 @@
-01 - Na pasta GL estão aqruivo relacionados a biblioteca OpenGl  - Os mesmos não necessariamente precisam ser utilizados CASO JÁ POSSUA o OpenGl instalado!
-	01.a - Caso não possua, em C:\Windows\System copie glut32.dll, após, adicione o diretório (GL)  aos binários, bibliotecas C includes e C++ Includes, isto nas opções do compilador.
+01 - Na pasta GL estão aqruivo os arquivos relacionados a biblioteca OpenGl  <<<====== No LAB as máquinas já possuem isto!
+   - Os mesmos não necessariamente precisam ser utilizados CASO JÁ POSSUA o OpenGl instalado!    <<<<< ====  !!!!!ATENÇÃO!!!!!
+	01.a - Caso não possua intalado, 
+		- em C:\Windows\System copie glut32.dll, 
+		- após, adicione o diretório (GL)  aos binários, bibliotecas C includes e C++ Includes, no caso do devc++ isto fica em ferramentas ==>> opções do 			  compilador, basta procurar o compilador corrente e configurar.
 	01.b - No template do projeto inclua no Linker os parâmetros: -lglut32 -lglu32 -lopengl32
 
-02 -  Na pasta TRABALHO encontrasse projeto.
+
+02 -  Na pasta TRABALHO está o projeto que irão usar na aopresentação.
 	02.a - Execute o Template, compile e execute o rojeto.
-	02.b - O binário Template_GLUT.exe executa o programa diretamente
+		- CASO NÃO COMPILE NESETE GIT TEM O EXECUTÁVEL(binário.exe)..
+	02.b - O binário Template_GLUT.exe executa o programa diretamente.
+
+
 
 /* Jogo da memória tipo genius,
 * INTRUÇÕES E TECLAS PARA O JOGO: 
@@ -17,5 +24,5 @@
 * W / w -  Branco  /White     - cor código 4
 *
 * Após digitar a sequência anterior completa, 
-* pressionar S para acelerar para próxima etapa, se quiser!. 
+* pressionar S/s para acelerar para próxima etapa, se quiser!. 
 */
